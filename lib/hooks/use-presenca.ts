@@ -61,6 +61,7 @@ export function usePresenca(eventoId: string) {
     try {
       if (confirmado) {
         // Remover presença
+        console.log('[use-presenca] Removendo presença:', { userId, eventoId });
         const { error } = await supabase
           .from('presencas_confirmadas')
           .delete()
@@ -72,21 +73,25 @@ export function usePresenca(eventoId: string) {
           return;
         }
 
+        console.log('[use-presenca] ✅ Presença removida com sucesso');
         setConfirmado(false);
       } else {
         // Adicionar presença
-        const { error } = await supabase
+        console.log('[use-presenca] Adicionando presença:', { userId, eventoId });
+        const { data, error } = await supabase
           .from('presencas_confirmadas')
           .insert({
             user_id: userId,
             evento_id: eventoId,
-          });
+          })
+          .select();
 
         if (error) {
           console.error('[use-presenca] Error adding:', error);
           return;
         }
 
+        console.log('[use-presenca] ✅ Presença confirmada com sucesso:', data);
         setConfirmado(true);
       }
     } catch (err) {
