@@ -17,7 +17,6 @@ import {
     PlaceAutocomplete,
     type PlaceAutocompleteProps,
 } from "@/components/ui/place-autocomplete"
-import type { CheckboxItem } from "@radix-ui/react-dropdown-menu"
 import type {
     Circle,
     CircleMarker,
@@ -219,7 +218,7 @@ interface MapTileLayerOption {
 }
 
 interface MapLayerGroupOption
-    extends Pick<React.ComponentProps<typeof CheckboxItem>, "disabled"> {
+    extends Pick<React.ComponentProps<typeof DropdownMenuCheckboxItem>, "disabled"> {
     name: string
 }
 
