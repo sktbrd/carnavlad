@@ -20,6 +20,11 @@ export default function LoginButton() {
   const supabase = createClient();
 
   useEffect(() => {
+    if (!supabase) {
+      setLoading(false);
+      return;
+    }
+
     // Verificar usuário atual
     supabase.auth.getUser().then(({ data: { user } }) => {
       setUser(user);
@@ -34,9 +39,14 @@ export default function LoginButton() {
     });
 
     return () => subscription.unsubscribe();
-  }, [supabase.auth]);
+  }, [supabase]);
 
   const handleLogin = async () => {
+    if (!supabase) {
+      alert('Login não configurado. Configure as variáveis de ambiente do Supabase.');
+      return;
+    }
+
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
@@ -55,6 +65,7 @@ export default function LoginButton() {
   };
 
   const handleLogout = async () => {
+    if (!supabase) return;
     await supabase.auth.signOut();
   };
 
@@ -64,6 +75,11 @@ export default function LoginButton() {
         <User className="w-4 h-4" />
       </Button>
     );
+  }
+
+  // Se não tiver Supabase configurado, não mostra botão
+  if (!supabase) {
+    return null;
   }
 
   if (user) {
