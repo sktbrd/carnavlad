@@ -8,6 +8,11 @@ export function GoogleLoginButton() {
   const supabase = createClient()
 
   const handleGoogleLogin = async () => {
+    if (!supabase) {
+      alert('Supabase não configurado. Verifique as variáveis de ambiente.')
+      return
+    }
+
     try {
       setLoading(true)
       const { data, error } = await supabase.auth.signInWithOAuth({
