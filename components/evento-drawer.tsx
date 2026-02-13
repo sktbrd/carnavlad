@@ -1,6 +1,6 @@
 'use client'
 
-import { X, Calendar, MapPin, Clock, Users, Share2, Heart } from 'lucide-react'
+import { X, Calendar, MapPin, Clock, Share2, Heart } from 'lucide-react'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import type { EventoCompleto } from '@/lib/types'
@@ -83,31 +83,7 @@ export default function EventoDrawer({ evento, isOpen, onClose }: EventoDrawerPr
                 )}
               </div>
             </div>
-
-            {evento.local_bairro && (
-              <div className="flex items-start gap-3">
-                <Users className="w-5 h-5 text-yellow-300 mt-1 flex-shrink-0" />
-                <div>
-                  <p className="text-white/70 text-sm">Bairro</p>
-                  <p className="text-white font-semibold">{evento.local_bairro}</p>
-                </div>
-              </div>
-            )}
           </div>
-
-          {/* Tags */}
-          {evento.categorias && evento.categorias.length > 0 && (
-            <div className="flex flex-wrap gap-2">
-              {evento.categorias.map((categoria) => (
-                <span
-                  key={categoria}
-                  className="px-3 py-1 bg-yellow-400 text-purple-900 rounded-full text-sm font-bold"
-                >
-                  {categoria}
-                </span>
-              ))}
-            </div>
-          )}
 
           {/* CTAs */}
           <div className="space-y-3">
