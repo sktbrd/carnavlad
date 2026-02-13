@@ -50,7 +50,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ConfettiClick />
-
+        <Header />
         {children}
       </body>
     </html>
