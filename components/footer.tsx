@@ -1,4 +1,4 @@
-import { Heart, Github, Twitter, Instagram } from 'lucide-react';
+import { Github, Twitter, Instagram, Cannabis } from 'lucide-react';
 
 export default function Footer() {
   return (
@@ -9,7 +9,7 @@ export default function Footer() {
           <div className="space-y-4">
             <h3 className="text-2xl font-bold">🎭 CarnaVlad</h3>
             <p className="text-sm text-muted-foreground">
-              Seu guia completo dos blocos de carnaval do Rio de Janeiro.
+              Seu guia completo para curtir com o Vlad no rio, use Venê.
             </p>
             <div className="flex gap-3">
               <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
@@ -108,9 +108,9 @@ export default function Footer() {
 
         <div className="border-t mt-8 pt-8 text-center text-sm text-muted-foreground">
           <p className="flex items-center justify-center gap-1">
-            Feito com <Heart className="w-4 h-4 text-red-500 fill-current" /> para o Carnaval Rio 2026
+            Feito com <Cannabis className="w-4 h-4 text-green-500 fill-current" /> prensadin para o Carnaval Rio 2026
           </p>
-          <p className="mt-2">© {new Date().getFullYear()} CarnaVlad. Todos os direitos reservados.</p>
+          <p className="mt-2">© {new Date().getFullYear()} CarnaVlad. Todos os esquerdos reservados.</p>
         </div>
       </div>
     </footer>

@@ -1,14 +1,25 @@
 'use client';
 
 import { useState, useMemo } from 'react';
+import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Clock, MapPin, Search, Filter } from 'lucide-react';
+import { Clock, MapPin, Search, Filter, ChevronRight } from 'lucide-react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { useBlocos } from '@/lib/hooks/use-blocos';
+
+// Helper para criar slug a partir do nome do bloco
+function createSlug(name: string): string {
+  return name
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+}
 
 export default function ListaView() {
   const { eventos, loading } = useBlocos();
@@ -86,35 +97,43 @@ export default function ListaView() {
         </p>
         
         <div className="grid gap-3">
-          {eventosFiltrados.map((evento) => (
-            <Card key={evento.id} className="hover:shadow-md transition-shadow">
-              <CardContent className="p-4">
-                <div className="flex items-start justify-between gap-4">
-                  <div className="flex-1 space-y-2">
-                    <div>
-                      <h3 className="font-bold text-lg">{evento.bloco_nome}</h3>
-                      <div className="flex flex-wrap gap-2 mt-1">
-                        <Badge variant="secondary">
-                          {format(new Date(evento.data), "dd/MM", { locale: ptBR })}
-                        </Badge>
-                        <Badge variant="outline" className="flex items-center gap-1">
-                          <Clock className="w-3 h-3" />
-                          {evento.horario || 'A confirmar'}
-                        </Badge>
+          {eventosFiltrados.map((evento) => {
+            const slug = createSlug(evento.bloco_nome);
+            return (
+              <Link key={evento.id} href={`/evento/${slug}`}>
+                <Card className="hover:shadow-md hover:border-orange-300 transition-all cursor-pointer group">
+                  <CardContent className="p-4">
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="flex-1 space-y-2">
+                        <div>
+                          <h3 className="font-bold text-lg group-hover:text-orange-600 transition-colors">
+                            {evento.bloco_nome}
+                          </h3>
+                          <div className="flex flex-wrap gap-2 mt-1">
+                            <Badge variant="secondary">
+                              {format(new Date(evento.data), "dd/MM", { locale: ptBR })}
+                            </Badge>
+                            <Badge variant="outline" className="flex items-center gap-1">
+                              <Clock className="w-3 h-3" />
+                              {evento.horario || 'A confirmar'}
+                            </Badge>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-2 text-sm">
+                          <MapPin className="w-4 h-4 mt-0.5 text-muted-foreground flex-shrink-0" />
+                          <div>
+                            <p className="font-medium">{evento.local_nome}</p>
+                            <p className="text-muted-foreground">{evento.local_endereco}</p>
+                          </div>
+                        </div>
                       </div>
+                      <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-orange-600 group-hover:translate-x-1 transition-all flex-shrink-0" />
                     </div>
-                    <div className="flex items-start gap-2 text-sm">
-                      <MapPin className="w-4 h-4 mt-0.5 text-muted-foreground flex-shrink-0" />
-                      <div>
-                        <p className="font-medium">{evento.local_nome}</p>
-                        <p className="text-muted-foreground">{evento.local_endereco}</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+                  </CardContent>
+                </Card>
+              </Link>
+            );
+          })}
         </div>
       </div>
     </div>
