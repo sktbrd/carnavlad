@@ -13,13 +13,14 @@ interface FollowButtonProps {
 export default function FollowButton({ currentUserId, targetUserId, targetUsername }: FollowButtonProps) {
   const [isFollowing, setIsFollowing] = useState(false);
   const [loading, setLoading] = useState(true);
-  const supabase = createClient();
 
   useEffect(() => {
     checkFollowStatus();
   }, [currentUserId, targetUserId]);
 
   async function checkFollowStatus() {
+    const supabase = createClient();
+    
     if (!supabase) {
       setLoading(false);
       return;
@@ -44,6 +45,8 @@ export default function FollowButton({ currentUserId, targetUserId, targetUserna
   }
 
   async function toggleFollow() {
+    const supabase = createClient();
+    
     if (!supabase) return;
 
     setLoading(true);

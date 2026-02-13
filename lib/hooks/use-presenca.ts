@@ -2,21 +2,26 @@
 
 import { useState, useEffect } from 'react';
 import { createClient } from '@/lib/supabase/client';
+import type { SupabaseClient } from '@supabase/supabase-js';
 
 export function usePresenca(eventoId: string) {
   const [confirmado, setConfirmado] = useState(false);
   const [loading, setLoading] = useState(true);
   const [userId, setUserId] = useState<string | null>(null);
-
-  const supabase = createClient();
+  const [supabase, setSupabase] = useState<SupabaseClient | null>(null);
 
   useEffect(() => {
-    if (!supabase) {
-      setLoading(false);
-      return;
-    }
+    const client = createClient();
+    setSupabase(client);
+  }, []);
 
+  useEffect(() => {
     async function checkPresenca() {
+      if (!supabase) {
+        setLoading(false);
+        return;
+      }
+
       try {
         // Verificar se usuário está autenticado
         const { data: { user } } = await supabase.auth.getUser();
@@ -46,7 +51,9 @@ export function usePresenca(eventoId: string) {
       }
     }
 
-    checkPresenca();
+    if (supabase) {
+      checkPresenca();
+    }
   }, [eventoId, supabase]);
 
   const togglePresenca = async () => {
