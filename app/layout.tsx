@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/header";
 import ConfettiClick from "@/components/confetti-click";
+import PWAInstall from "@/components/pwa-install";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -84,9 +85,28 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <head>
+        {/* PWA Icons */}
         <link rel="icon" href="/icon.svg" type="image/svg+xml" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-        <meta name="theme-color" content="#8A2BE2" />
+        <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
+        <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+        
+        {/* PWA Manifest */}
+        <link rel="manifest" href="/manifest.json" />
+        
+        {/* Theme Colors */}
+        <meta name="theme-color" content="#ec4899" />
+        <meta name="msapplication-TileColor" content="#9333ea" />
+        <meta name="msapplication-config" content="/browserconfig.xml" />
+        
+        {/* Apple PWA */}
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-title" content="Carnavlad" />
+        
+        {/* Mobile Web App */}
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="format-detection" content="telephone=no" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
@@ -94,6 +114,7 @@ export default function RootLayout({
         <ConfettiClick />
         <Header />
         {children}
+        <PWAInstall />
       </body>
     </html>
   );

@@ -1,13 +1,63 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <rect width="512" height="512" rx="128" fill="url(#grad)"/>
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circular gradient -->
   <defs>
-    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#FFD700;stop-opacity:1" />
-      <stop offset="25%" style="stop-color:#FF6B35;stop-opacity:1" />
-      <stop offset="50%" style="stop-color:#EC4899;stop-opacity:1" />
-      <stop offset="75%" style="stop-color:#8A2BE2;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#00BFFF;stop-opacity:1" />
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#9333ea;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#ec4899;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f97316;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="maskGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f59e0b;stop-opacity:1" />
     </linearGradient>
   </defs>
-  <text x="256" y="380" font-size="280" text-anchor="middle">🎭</text>
+  
+  <!-- Background circle -->
+  <circle cx="256" cy="256" r="256" fill="url(#bgGradient)"/>
+  
+  <!-- Confetti particles -->
+  <rect x="100" y="80" width="20" height="30" fill="#fbbf24" transform="rotate(15 110 95)" rx="3"/>
+  <rect x="380" y="100" width="25" height="20" fill="#ec4899" transform="rotate(-20 392 110)" rx="3"/>
+  <rect x="150" y="400" width="20" height="35" fill="#3b82f6" transform="rotate(30 160 417)" rx="3"/>
+  <rect x="400" y="380" width="30" height="20" fill="#22c55e" transform="rotate(-15 415 390)" rx="3"/>
+  <circle cx="90" cy="250" r="12" fill="#f97316"/>
+  <circle cx="420" cy="280" r="15" fill="#a855f7"/>
+  
+  <!-- Carnival mask -->
+  <g transform="translate(256, 256)">
+    <!-- Left eye hole -->
+    <ellipse cx="-60" cy="-20" rx="45" ry="55" fill="url(#maskGradient)"/>
+    <ellipse cx="-60" cy="-20" rx="30" ry="40" fill="#1f2937"/>
+    
+    <!-- Right eye hole -->
+    <ellipse cx="60" cy="-20" rx="45" ry="55" fill="url(#maskGradient)"/>
+    <ellipse cx="60" cy="-20" rx="30" ry="40" fill="#1f2937"/>
+    
+    <!-- Mask bridge -->
+    <rect x="-20" y="-30" width="40" height="30" fill="url(#maskGradient)" rx="5"/>
+    
+    <!-- Mask top decorations -->
+    <path d="M -100,-60 Q -80,-90 -60,-80 Q -40,-70 -20,-75 Q 0,-80 20,-75 Q 40,-70 60,-80 Q 80,-90 100,-60" 
+          fill="url(#maskGradient)" stroke="#f59e0b" stroke-width="3"/>
+    
+    <!-- Sparkles on mask -->
+    <circle cx="-80" cy="-40" r="8" fill="#fef3c7"/>
+    <circle cx="80" cy="-40" r="8" fill="#fef3c7"/>
+    <circle cx="0" cy="-50" r="10" fill="#fef3c7"/>
+    
+    <!-- Feathers -->
+    <ellipse cx="-90" cy="-70" rx="20" ry="60" fill="#ec4899" opacity="0.8" transform="rotate(-30 -90 -70)"/>
+    <ellipse cx="-70" cy="-80" rx="18" ry="55" fill="#f97316" opacity="0.8" transform="rotate(-20 -70 -80)"/>
+    <ellipse cx="90" cy="-70" rx="20" ry="60" fill="#3b82f6" opacity="0.8" transform="rotate(30 90 -70)"/>
+    <ellipse cx="70" cy="-80" rx="18" ry="55" fill="#22c55e" opacity="0.8" transform="rotate(20 70 -80)"/>
+    
+    <!-- Smile -->
+    <path d="M -70,40 Q 0,70 70,40" stroke="#f59e0b" stroke-width="8" fill="none" stroke-linecap="round"/>
+  </g>
+  
+  <!-- More confetti on top -->
+  <rect x="200" y="50" width="15" height="25" fill="#fbbf24" transform="rotate(45 207 62)" rx="2"/>
+  <rect x="300" y="60" width="20" height="15" fill="#ec4899" transform="rotate(-30 310 67)" rx="2"/>
+  <circle cx="250" cy="450" r="10" fill="#3b82f6"/>
+  <circle cx="350" cy="460" r="12" fill="#22c55e"/>
 </svg>
