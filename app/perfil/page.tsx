@@ -2,8 +2,9 @@ import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { Calendar, MapPin, Users, LogOut } from 'lucide-react'
 import Link from 'next/link'
-import { getEventosConfirmados, getAmigosAceitos, contarBlocosConfirmados } from '@/lib/supabase/queries'
-import { parseLocalDate } from '@/lib/date-utils'
+import { getAmigosAceitos, contarBlocosConfirmados } from '@/lib/supabase/queries'
+import BlocosConfirmadosList from '@/components/perfil/blocos-confirmados-list'
+import ShareProfileButton from '@/components/perfil/share-profile-button'
 
 export default async function PerfilPage() {
   const supabase = await createClient()
@@ -20,8 +21,17 @@ export default async function PerfilPage() {
     redirect('/login')
   }
 
-  // Buscar blocos confirmados do Supabase
-  const eventosConfirmados = await getEventosConfirmados(supabase, user.id)
+  // Buscar dados do usuário (incluindo username)
+  const { data: usuarioData } = await supabase
+    .from('usuarios')
+    .select('username')
+    .eq('id', user.id)
+    .single();
+
+  const username = usuarioData?.username || 'usuario';
+
+  // Buscar contagem de blocos confirmados
+  const totalBlocosConfirmados = await contarBlocosConfirmados(supabase, user.id)
 
   // Buscar amigos do Supabase
   const amigosData = await getAmigosAceitos(supabase, user.id)
@@ -82,13 +92,19 @@ export default async function PerfilPage() {
               <h1 className="text-3xl sm:text-4xl font-bold text-white mb-2">
                 {user.user_metadata.full_name || 'Foliã(o)'}
               </h1>
-              <p className="text-white/80 text-lg mb-4">{user.email}</p>
+              <p className="text-white/80 text-lg mb-1">{user.email}</p>
+              <p className="text-yellow-300 text-md mb-4">@{username}</p>
+
+              {/* Compartilhar Perfil */}
+              <div className="mb-6">
+                <ShareProfileButton username={username} />
+              </div>
 
               {/* Stats */}
               <div className="flex flex-wrap justify-center sm:justify-start gap-6">
                 <div className="text-center">
                   <div className="text-3xl font-bold text-yellow-300">
-                    {eventosConfirmados.length}
+                    {totalBlocosConfirmados}
                   </div>
                   <div className="text-white/70 text-sm">Blocos Confirmados</div>
                 </div>
@@ -112,59 +128,7 @@ export default async function PerfilPage() {
                 Blocos Confirmados
               </h2>
 
-              {eventosConfirmados.length === 0 ? (
-                <div className="text-center py-12">
-                  <div className="text-6xl mb-4">🎭</div>
-                  <p className="text-white/70 mb-4">
-                    Você ainda não confirmou presença em nenhum bloco
-                  </p>
-                  <Link
-                    href="/"
-                    className="inline-block bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-3 px-6 rounded-xl transition-all"
-                  >
-                    Explorar Blocos
-                  </Link>
-                </div>
-              ) : (
-                <div className="space-y-4">
-                  {eventosConfirmados.map((evento) => {
-                    const dataObj = parseLocalDate(evento.data)
-                    const dia = dataObj.getDate()
-                    const mes = dataObj.toLocaleDateString('pt-BR', { month: 'short' })
-
-                    return (
-                      <Link
-                        key={evento.id}
-                        href={`/evento/${evento.bloco_slug}`}
-                        className="block bg-white/10 hover:bg-white/20 rounded-2xl p-4 border border-white/20 transition-all group"
-                      >
-                        <div className="flex gap-4">
-                          {/* Data */}
-                          <div className="flex-shrink-0 bg-yellow-400 rounded-xl p-3 text-center w-16">
-                            <div className="text-2xl font-bold text-purple-900">{dia}</div>
-                            <div className="text-xs uppercase text-purple-700">{mes}</div>
-                          </div>
-
-                          {/* Info */}
-                          <div className="flex-1 min-w-0">
-                            <h3 className="text-white font-bold text-lg mb-1 group-hover:text-yellow-300 transition-colors">
-                              {evento.bloco_nome}
-                            </h3>
-                            <div className="flex items-center gap-2 text-white/70 text-sm mb-1">
-                              <Calendar className="w-4 h-4" />
-                              <span>{evento.horario || 'Horário a confirmar'}</span>
-                            </div>
-                            <div className="flex items-center gap-2 text-white/70 text-sm">
-                              <MapPin className="w-4 h-4" />
-                              <span>{evento.local_nome}</span>
-                            </div>
-                          </div>
-                        </div>
-                      </Link>
-                    )
-                  })}
-                </div>
-              )}
+              <BlocosConfirmadosList userId={user.id} />
             </div>
           </div>
 

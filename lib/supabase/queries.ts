@@ -25,25 +25,32 @@ export async function getEventosConfirmados(
   supabase: SupabaseClient,
   userId: string
 ) {
-  const { data, error } = await supabase
+  // Primeiro buscar os IDs dos eventos confirmados
+  const { data: presencas, error: presencasError } = await supabase
     .from('presencas_confirmadas')
-    .select(`
-      evento_id,
-      created_at,
-      eventos_completos (*)
-    `)
+    .select('evento_id, created_at')
     .eq('user_id', userId)
     .order('created_at', { ascending: false })
 
-  if (error) {
-    console.error('Erro ao buscar eventos confirmados:', error)
+  if (presencasError || !presencas || presencas.length === 0) {
+    console.error('Erro ao buscar presenças confirmadas:', presencasError)
     return []
   }
 
-  // Extrair eventos da relação
-  return data
-    .map((item: any) => item.eventos_completos)
-    .filter(Boolean) as EventoCompleto[]
+  // Buscar detalhes dos eventos
+  const eventoIds = presencas.map(p => p.evento_id)
+  
+  const { data: eventos, error: eventosError } = await supabase
+    .from('eventos_completos')
+    .select('*')
+    .in('id', eventoIds)
+
+  if (eventosError) {
+    console.error('Erro ao buscar eventos completos:', eventosError)
+    return []
+  }
+
+  return eventos as EventoCompleto[]
 }
 
 /**
