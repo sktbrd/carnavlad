@@ -1,5 +1,72 @@
 -- Schema para Blocos de Carnaval Rio 2026
 
+-- Habilitar extensões
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+-- ============================================
+-- AUTENTICAÇÃO E PERFIS
+-- ============================================
+
+-- Tabela de perfis de usuário
+CREATE TABLE IF NOT EXISTS public.profiles (
+    id UUID REFERENCES auth.users ON DELETE CASCADE PRIMARY KEY,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL,
+    
+    -- Dados públicos
+    username TEXT UNIQUE,
+    full_name TEXT,
+    avatar_url TEXT,
+    bio TEXT,
+    
+    -- Preferências
+    blocos_favoritos TEXT[] DEFAULT '{}',
+    
+    -- Metadados
+    total_blocos_idos INTEGER DEFAULT 0,
+    total_fotos_enviadas INTEGER DEFAULT 0,
+    total_comentarios INTEGER DEFAULT 0
+);
+
+-- RLS (Row Level Security) para profiles
+ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
+
+-- Policies para profiles
+CREATE POLICY "Perfis são visíveis por todos"
+    ON public.profiles FOR SELECT
+    USING (true);
+
+CREATE POLICY "Usuários podem atualizar próprio perfil"
+    ON public.profiles FOR UPDATE
+    USING (auth.uid() = id);
+
+CREATE POLICY "Usuários podem inserir próprio perfil"
+    ON public.profiles FOR INSERT
+    WITH CHECK (auth.uid() = id);
+
+-- Trigger para criar perfil automaticamente ao criar usuário
+CREATE OR REPLACE FUNCTION public.handle_new_user()
+RETURNS TRIGGER AS $$
+BEGIN
+    INSERT INTO public.profiles (id, full_name, avatar_url, username)
+    VALUES (
+        NEW.id,
+        NEW.raw_user_meta_data->>'full_name',
+        NEW.raw_user_meta_data->>'avatar_url',
+        NEW.raw_user_meta_data->>'user_name'
+    );
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+CREATE OR REPLACE TRIGGER on_auth_user_created
+    AFTER INSERT ON auth.users
+    FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
+
+-- ============================================
+-- BLOCOS E EVENTOS
+-- ============================================
+
 -- Tabela de blocos (entidade principal)
 CREATE TABLE blocos (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
