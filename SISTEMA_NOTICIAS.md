@@ -182,30 +182,43 @@ riotur → bg-purple-500
 
 ---
 
-## 🤖 Automação (Vercel Cron)
+## 🤖 Automação (OpenClaw Cron Local)
 
-### Configurar `vercel.json`
+**Estratégia:** Usar OpenClaw Cron local ao invés de Vercel Cron.
 
-```json
-{
-  "crons": [
-    {
-      "path": "/api/scrape?source=all",
-      "schedule": "0 */2 * * *"
-    }
-  ]
-}
+**Vantagens:**
+- ✅ Zero dependência de Vercel Pro
+- ✅ Controle total sobre schedule
+- ✅ Execução local (mais rápido)
+- ✅ Notificações integradas
+
+### Setup Completo
+
+Ver: **[CRON_SETUP.md](./CRON_SETUP.md)**
+
+### Quick Start
+
+```bash
+# 1. Testar script
+cd /Users/vladnikolaev/carnavlad
+node scripts/import-to-supabase.js all
+
+# 2. Configurar cron
+chmod +x scripts/setup-cron.sh
+./scripts/setup-cron.sh
+
+# 3. Adicionar ao OpenClaw
+openclaw cron add < /tmp/scrape-noticias-cron.json
+
+# 4. Verificar
+openclaw cron list
 ```
 
-**Schedule:**
-- `0 */2 * * *` - A cada 2 horas
-- `0 */6 * * *` - A cada 6 horas
-- `0 0 * * *` - Uma vez por dia (meia-noite)
-
-**Ativar:**
-1. Adicione `vercel.json` na raiz
-2. Deploy no Vercel
-3. Crons rodam automaticamente
+**Schedule Recomendado:**
+```
+A cada 2 horas: 0 */2 * * *
+Timezone: America/Sao_Paulo
+```
 
 ---
 
