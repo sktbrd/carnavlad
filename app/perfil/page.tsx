@@ -4,6 +4,7 @@ import { Calendar, MapPin, Users, LogOut } from 'lucide-react'
 import Link from 'next/link'
 import { getAmigosAceitos, contarBlocosConfirmados } from '@/lib/supabase/queries'
 import BlocosConfirmadosList from '@/components/perfil/blocos-confirmados-list'
+import ShareProfileButton from '@/components/perfil/share-profile-button'
 
 export default async function PerfilPage() {
   const supabase = await createClient()
@@ -19,6 +20,15 @@ export default async function PerfilPage() {
   if (!user) {
     redirect('/login')
   }
+
+  // Buscar dados do usuário (incluindo username)
+  const { data: usuarioData } = await supabase
+    .from('usuarios')
+    .select('username')
+    .eq('id', user.id)
+    .single();
+
+  const username = usuarioData?.username || 'usuario';
 
   // Buscar contagem de blocos confirmados
   const totalBlocosConfirmados = await contarBlocosConfirmados(supabase, user.id)
@@ -82,7 +92,13 @@ export default async function PerfilPage() {
               <h1 className="text-3xl sm:text-4xl font-bold text-white mb-2">
                 {user.user_metadata.full_name || 'Foliã(o)'}
               </h1>
-              <p className="text-white/80 text-lg mb-4">{user.email}</p>
+              <p className="text-white/80 text-lg mb-1">{user.email}</p>
+              <p className="text-yellow-300 text-md mb-4">@{username}</p>
+
+              {/* Compartilhar Perfil */}
+              <div className="mb-6">
+                <ShareProfileButton username={username} />
+              </div>
 
               {/* Stats */}
               <div className="flex flex-wrap justify-center sm:justify-start gap-6">

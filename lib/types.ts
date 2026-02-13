@@ -98,5 +98,6 @@ export type Usuario = {
   email: string;
   nome?: string;
   avatar_url?: string;
+  username?: string;
   created_at: string;
 };
