@@ -6,6 +6,7 @@ import { Calendar, MapPin, Sparkles } from 'lucide-react';
 import { useBlocos } from '@/lib/hooks/use-blocos';
 import ColourfulText from '@/components/colourful-text';
 import ExportCalendarButton from '@/components/export-calendar-button';
+import { parseLocalDate } from '@/lib/date-utils';
 
 const carnavalColors = [
   "rgb(255, 215, 0)",   // Amarelo ouro
@@ -38,7 +39,7 @@ export default function HeroSection() {
       const eventosComData = eventos.map(e => {
         try {
           const [hours, minutes] = (e.horario || '00:00').split(':');
-          const eventoDate = new Date(e.data + 'T00:00:00-03:00'); // São Paulo timezone
+          const eventoDate = parseLocalDate(e.data);
           eventoDate.setHours(parseInt(hours) || 0, parseInt(minutes) || 0, 0);
           return { ...e, dataCompleta: eventoDate };
         } catch {

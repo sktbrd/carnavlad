@@ -8,6 +8,7 @@ import { Clock, MapPin, Heart, Share2, ChevronRight } from 'lucide-react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import type { EventoCompleto } from '@/lib/types';
+import { parseLocalDate } from '@/lib/date-utils';
 
 type EventoCardProps = {
   evento: EventoCompleto;
@@ -75,7 +76,7 @@ export default function EventoCard({ evento, variant = 'default' }: EventoCardPr
                 {evento.bloco_nome}
               </h3>
               <Badge variant="secondary" className="shrink-0">
-                {format(new Date(evento.data), 'dd/MM', { locale: ptBR })}
+                {format(parseLocalDate(evento.data), 'dd/MM', { locale: ptBR })}
               </Badge>
             </div>
             

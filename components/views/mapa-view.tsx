@@ -11,6 +11,7 @@ import { ptBR } from 'date-fns/locale';
 import { useBlocos } from '@/lib/hooks/use-blocos';
 import EventoDrawer from '@/components/evento-drawer';
 import type { EventoCompleto } from '@/lib/types';
+import { parseLocalDate } from '@/lib/date-utils';
 
 // Importar componentes de mapa dinamicamente (client-side only)
 const Map = dynamic(
@@ -86,7 +87,7 @@ export default function MapaView() {
               <SelectItem value="todas">Todas as datas</SelectItem>
               {datasDisponiveis.map(data => (
                 <SelectItem key={data} value={data}>
-                  {format(new Date(data), "EEEE, dd/MM", { locale: ptBR })}
+                  {format(parseLocalDate(data), "EEEE, dd/MM", { locale: ptBR })}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -130,7 +131,7 @@ export default function MapaView() {
                       <div className="space-y-1 text-sm">
                         <div className="flex items-center gap-1">
                           <Badge variant="secondary" className="text-xs">
-                            {format(new Date(evento.data), "dd/MM", { locale: ptBR })}
+                            {format(parseLocalDate(evento.data), "dd/MM", { locale: ptBR })}
                           </Badge>
                           <Badge variant="outline" className="text-xs">
                             <Clock className="w-3 h-3 mr-1" />

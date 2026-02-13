@@ -10,6 +10,7 @@ import { Clock, MapPin, Search, Filter, ChevronRight } from 'lucide-react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { useBlocos } from '@/lib/hooks/use-blocos';
+import { parseLocalDate } from '@/lib/date-utils';
 
 // Helper para criar slug a partir do nome do bloco
 function createSlug(name: string): string {
@@ -82,7 +83,7 @@ export default function ListaView() {
               <SelectItem value="todas">Todas as datas</SelectItem>
               {datasDisponiveis.map(data => (
                 <SelectItem key={data} value={data}>
-                  {format(new Date(data), "EEEE, dd/MM", { locale: ptBR })}
+                  {format(parseLocalDate(data), "EEEE, dd/MM", { locale: ptBR })}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -111,7 +112,7 @@ export default function ListaView() {
                           </h3>
                           <div className="flex flex-wrap gap-2 mt-1">
                             <Badge variant="secondary">
-                              {format(new Date(evento.data), "dd/MM", { locale: ptBR })}
+                              {format(parseLocalDate(evento.data), "dd/MM", { locale: ptBR })}
                             </Badge>
                             <Badge variant="outline" className="flex items-center gap-1">
                               <Clock className="w-3 h-3" />

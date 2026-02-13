@@ -5,6 +5,7 @@ import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import type { EventoCompleto } from '@/lib/types'
 import { useRouter } from 'next/navigation'
+import { parseLocalDate } from '@/lib/date-utils'
 
 interface EventoDrawerProps {
   evento: EventoCompleto | null
@@ -60,7 +61,7 @@ export default function EventoDrawer({ evento, isOpen, onClose }: EventoDrawerPr
               <div>
                 <p className="text-white/70 text-sm">Data</p>
                 <p className="text-white font-semibold">
-                  {format(new Date(evento.data), "EEEE, dd 'de' MMMM", { locale: ptBR })}
+                  {format(parseLocalDate(evento.data), "EEEE, dd 'de' MMMM", { locale: ptBR })}
                 </p>
               </div>
             </div>

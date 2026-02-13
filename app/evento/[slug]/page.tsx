@@ -5,6 +5,7 @@ import { generateBlocoContent } from '@/lib/groq-generator';
 import { AddToCalendarButton } from '@/components/evento/add-to-calendar-button';
 import { ShareButton } from '@/components/evento/share-button';
 import { ConfirmPresenceButton } from '@/components/evento/confirm-presence-button';
+import { parseLocalDate } from '@/lib/date-utils';
 
 interface EventPageProps {
   params: Promise<{ slug: string }>;
@@ -100,7 +101,7 @@ export default async function EventPage({ params }: EventPageProps) {
     };
   }
 
-  const eventDate = new Date(eventData.date);
+  const eventDate = parseLocalDate(eventData.date);
   const formattedDate = eventDate.toLocaleDateString('pt-BR', {
     weekday: 'long',
     year: 'numeric',

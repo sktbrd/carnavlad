@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation'
 import { Calendar, MapPin, Users, LogOut } from 'lucide-react'
 import Link from 'next/link'
 import { getEventosConfirmados, getAmigosAceitos, contarBlocosConfirmados } from '@/lib/supabase/queries'
+import { parseLocalDate } from '@/lib/date-utils'
 
 export default async function PerfilPage() {
   const supabase = await createClient()
@@ -127,7 +128,7 @@ export default async function PerfilPage() {
               ) : (
                 <div className="space-y-4">
                   {eventosConfirmados.map((evento) => {
-                    const dataObj = new Date(evento.data + 'T12:00:00')
+                    const dataObj = parseLocalDate(evento.data)
                     const dia = dataObj.getDate()
                     const mes = dataObj.toLocaleDateString('pt-BR', { month: 'short' })
 

@@ -4,6 +4,7 @@ import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { useBlocos } from '@/lib/hooks/use-blocos';
 import EventoCard from '@/components/evento-card';
+import { parseLocalDate } from '@/lib/date-utils';
 
 export default function AgendaView() {
   const { eventosPorDia, loading } = useBlocos();
@@ -23,7 +24,7 @@ export default function AgendaView() {
           {/* Cabeçalho do dia */}
           <div className="sticky top-20 z-40 bg-background/95 backdrop-blur border-b pb-3 mb-3">
             <h2 className="text-xl font-semibold">
-              {format(new Date(data), "EEEE, dd 'de' MMMM", { locale: ptBR })}
+              {format(parseLocalDate(data), "EEEE, dd 'de' MMMM", { locale: ptBR })}
             </h2>
             <p className="text-sm text-muted-foreground">{eventos.length} blocos</p>
           </div>

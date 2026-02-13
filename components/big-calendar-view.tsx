@@ -9,6 +9,7 @@ import { useMemo, useState } from 'react';
 import { useBlocos } from '@/lib/hooks/use-blocos';
 import type { EventoCompleto } from '@/lib/types';
 import EventoDrawer from './evento-drawer';
+import { parseLocalDate } from '@/lib/date-utils';
 
 moment.locale('pt-br');
 const localizer = momentLocalizer(moment);
@@ -45,9 +46,9 @@ export default function BigCalendarView() {
   
   // Calcular data central baseada nos eventos
   const initialDate = useMemo(() => {
-    if (eventos.length === 0) return new Date('2026-02-14');
+    if (eventos.length === 0) return parseLocalDate('2026-02-14');
     
-    const dates = eventos.map(e => new Date(e.data).getTime());
+    const dates = eventos.map(e => parseLocalDate(e.data).getTime());
     const minDate = Math.min(...dates);
     const maxDate = Math.max(...dates);
     const middleDate = new Date((minDate + maxDate) / 2);
@@ -60,8 +61,10 @@ export default function BigCalendarView() {
   const calendarEvents: CalendarEvent[] = useMemo(() => {
     return eventos.map(evento => {
       const [hours, minutes] = (evento.horario || '12:00').split(':');
-      const start = new Date(evento.data);
-      start.setHours(parseInt(hours) || 12, parseInt(minutes) || 0, 0);
+      
+      // Parsear data como local (não UTC) para evitar bug de timezone
+      const start = parseLocalDate(evento.data);
+      start.setHours(parseInt(hours) || 12, parseInt(minutes) || 0, 0, 0);
 
       const end = new Date(start);
       end.setHours(start.getHours() + 2); // 2 horas de duração padrão
