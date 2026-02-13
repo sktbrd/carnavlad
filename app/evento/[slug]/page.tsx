@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, Calendar, MapPin, Clock, Users } from 'lucide-react';
+import { generateBlocoContent } from '@/lib/groq-generator';
 
 interface EventPageProps {
   params: Promise<{ slug: string }>;
@@ -14,6 +15,14 @@ function createSlug(name: string): string {
     .replace(/[\u0300-\u036f]/g, '')
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-|-$/g, '');
+}
+
+// Helper inverso: slug -> nome
+function slugToName(slug: string): string {
+  return slug
+    .split('-')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
 }
 
 // Mock data - será substituído por dados reais do banco depois
@@ -38,7 +47,7 @@ export default async function EventPage({ params }: EventPageProps) {
   const { slug } = await params;
 
   // TODO: Substituir por busca no banco quando Supabase estiver configurado
-  // Por enquanto, usa mock data ou retorna 404
+  // Por enquanto, usa mock data ou gera com Groq AI
   let eventData;
   
   if (MOCK_EVENTS[slug]) {
@@ -59,30 +68,31 @@ export default async function EventPage({ params }: EventPageProps) {
       }
     };
   } else {
-    // Se não encontrar nos mocks, cria dados genéricos baseado no slug
-    const name = slug
-      .split('-')
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(' ');
+    // Gera conteúdo dinâmico com Groq AI 🎭
+    const name = slugToName(slug);
+    const location = 'Rio de Janeiro';
+    
+    // Gera conteúdo usando IA
+    const aiContent = await generateBlocoContent(name, location);
     
     eventData = {
       name,
       slug,
-      description: 'Um dos blocos mais animados do carnaval! Venha com sua fantasia e muita energia.',
+      description: aiContent.description,
       date: '2026-02-15',
       time: 'A confirmar',
-      location: 'Rio de Janeiro',
+      location,
       address: 'Local a confirmar',
       capacity: 5000,
       price: 'Gratuito',
       organizer: name,
       contact: '@' + slug,
       image: 'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=800',
-      tags: ['Samba', 'Carnaval', 'Festa'],
+      tags: aiContent.tags,
       details: {
-        whatToBring: ['Água', 'Protetor solar', 'Fantasia'],
-        rules: ['Respeitar o próximo', 'Não jogar lixo no chão', 'Beber com moderação'],
-        accessibility: 'Consulte a organização'
+        whatToBring: aiContent.whatToBring,
+        rules: aiContent.rules,
+        accessibility: 'Consulte a organização para informações de acessibilidade'
       }
     };
   }
