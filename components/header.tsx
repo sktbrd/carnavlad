@@ -1,6 +1,7 @@
 'use client';
 
 import LoginButton from '@/components/auth/login-button';
+import { ProfileButton } from '@/components/auth/profile-button';
 import Link from 'next/link';
 
 export default function Header() {
@@ -15,6 +16,7 @@ export default function Header() {
         </Link>
 
         <nav className="flex items-center gap-4">
+          <ProfileButton />
           <LoginButton />
         </nav>
       </div>
