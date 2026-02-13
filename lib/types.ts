@@ -29,6 +29,14 @@ export type EventoCompleto = Evento & {
   bloco_slug: string;
   instagram_url?: string;
   whatsapp_url?: string;
+  ano_fundacao?: string;
+  descricao_detalhada?: string;
+  bairro_nome?: string;
+  bairro_regiao?: string;
+  tipo?: string;
+  publico_estimado?: number;
+  hora_fim?: string;
+  api_id?: number;
 };
 
 export type Contribuicao = {
