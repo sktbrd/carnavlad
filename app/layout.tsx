@@ -15,15 +15,57 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "CarnaVlad - Carnaval Rio 2026",
-  description: "Seu guia completo dos blocos de carnaval do Rio de Janeiro 2026. Agenda, calendário e mapa com 250+ blocos.",
+  title: "Carnavlad 2026 | Blocos de Carnaval do Rio",
+  description: "Seu guia definitivo dos blocos de rua do Rio de Janeiro! Descubra eventos, rotas, horários e muito mais. Porque todo bloco merece um site 🎭✨",
   manifest: "/manifest.json",
+  keywords: [
+    "carnaval",
+    "rio de janeiro",
+    "blocos",
+    "carnaval 2026",
+    "blocos de rua",
+    "carnaval rio",
+    "folia",
+    "sambódromo",
+    "blocos cariocas",
+  ],
+  authors: [{ name: "Carnavlad" }],
+  creator: "Carnavlad",
+  publisher: "Carnavlad",
+  
+  // OpenGraph
+  openGraph: {
+    type: "website",
+    locale: "pt_BR",
+    url: "https://carnavlad.vercel.app",
+    siteName: "Carnavlad 2026",
+    title: "Carnavlad 2026 | Blocos de Carnaval do Rio",
+    description: "Seu guia definitivo dos blocos de rua do Rio! 🎭 Porque todo bloco merece um site",
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Carnavlad 2026 - Porque todo bloco merece um site",
+      },
+    ],
+  },
+  
+  // Twitter
+  twitter: {
+    card: "summary_large_image",
+    title: "Carnavlad 2026 | Blocos de Carnaval do Rio",
+    description: "Seu guia definitivo dos blocos de rua do Rio! 🎭 Porque todo bloco merece um site",
+    images: ["/og-image.jpg"],
+  },
+  
+  // PWA
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "CarnaVlad",
+    title: "Carnavlad",
   },
-  applicationName: "CarnaVlad",
+  applicationName: "Carnavlad",
 };
 
 export const viewport = {
