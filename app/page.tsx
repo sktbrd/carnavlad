@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Calendar, List, MapPin, Clock } from 'lucide-react';
 import HeroSection from '@/components/hero-section';
@@ -9,6 +9,7 @@ import AgendaView from '@/components/views/agenda-view';
 import ListaView from '@/components/views/lista-view';
 import CalendarioView from '@/components/views/calendario-view';
 import MapaView from '@/components/views/mapa-view';
+import AuthHandler from './auth-handler';
 import type { ModoVisualizacao } from '@/lib/types';
 
 export default function Home() {
@@ -16,6 +17,9 @@ export default function Home() {
 
   return (
     <main className="min-h-screen">
+      <Suspense fallback={null}>
+        <AuthHandler />
+      </Suspense>
       {/* Hero Section */}
       <HeroSection />
 
