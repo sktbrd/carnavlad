@@ -1,0 +1,112 @@
+{
+  "total_blocos": 430,
+  "total_bairros": 84,
+  "tipos_de_blocos": {
+    "TRADICIONAL": 395,
+    "RELIGIOSO": 5,
+    "MEGA BLOCO": 11,
+    "INFANTIL": 16,
+    "LGBTQIAPN+": 3
+  },
+  "blocos_por_mes": {
+    "janeiro de 2026": 34,
+    "fevereiro de 2026": 396
+  },
+  "top_10_blocos": [
+    {
+      "nome": "CORDÃO DA BOLA PRETA",
+      "publico": 700000,
+      "data": "2026-02-14T07:00:00",
+      "tipo": "MEGA BLOCO"
+    },
+    {
+      "nome": "FERVO DA LUD",
+      "publico": 600000,
+      "data": "2026-02-17T07:00:00",
+      "tipo": "MEGA BLOCO"
+    },
+    {
+      "nome": "BLOCO DA GOLD VEM COM O GIGANTE",
+      "publico": 150000,
+      "data": "2026-01-31T07:00:00",
+      "tipo": "MEGA BLOCO"
+    },
+    {
+      "nome": "SERAQABRE?",
+      "publico": 150000,
+      "data": "2026-02-01T07:00:00",
+      "tipo": "MEGA BLOCO"
+    },
+    {
+      "nome": "BLOCO AREIA",
+      "publico": 120000,
+      "data": "2026-02-15T07:00:00",
+      "tipo": "TRADICIONAL"
+    },
+    {
+      "nome": "BLOCO DA ANITTA",
+      "publico": 100000,
+      "data": "2026-02-21T07:00:00",
+      "tipo": "MEGA BLOCO"
+    },
+    {
+      "nome": "BLOCO DO SARGENTO PIMENTA",
+      "publico": 80000,
+      "data": "2026-02-16T08:00:00",
+      "tipo": "TRADICIONAL"
+    },
+    {
+      "nome": "MONOBLOCO",
+      "publico": 80000,
+      "data": "2026-02-22T07:00:00",
+      "tipo": "MEGA BLOCO"
+    },
+    {
+      "nome": "BLOCO CHÁ DA ALICE",
+      "publico": 50000,
+      "data": "2026-01-24T07:00:00",
+      "tipo": "MEGA BLOCO"
+    },
+    {
+      "nome": "BLOCO DA LEXA",
+      "publico": 50000,
+      "data": "2026-01-25T07:00:00",
+      "tipo": "MEGA BLOCO"
+    }
+  ],
+  "campos_disponiveis": [
+    "id",
+    "attraction_type",
+    "title",
+    "date",
+    "description",
+    "lat",
+    "lng",
+    "address",
+    "neighborhood_id",
+    "estimated_audience",
+    "end_time",
+    "parade_time",
+    "foundation_year",
+    "extra_text1",
+    "extra_text2",
+    "extra_text3",
+    "extra_text4",
+    "extra_text5",
+    "extra_text6",
+    "extra_text7",
+    "fire_count",
+    "save_count",
+    "photo_url"
+  ],
+  "regioes": {
+    "Barra Da Tijuca E Jacarepaguá": 11,
+    "Zona Norte": 21,
+    "Zona Oeste": 11,
+    "Zona Sul": 14,
+    "Ilha Do Governador E Zona Da Leopoldina": 10,
+    "Centro": 11,
+    "Grande Tijuca": 6
+  },
+  "ultima_atualizacao": "2026-02-13T10:51:08.040-03:00"
+}
