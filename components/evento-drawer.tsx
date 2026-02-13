@@ -1,6 +1,6 @@
 'use client'
 
-import { X, Calendar, MapPin, Clock, Share2, Heart } from 'lucide-react'
+import { X, Calendar, MapPin, Clock, Share2, Heart, Instagram, Globe, Award } from 'lucide-react'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import type { EventoCompleto } from '@/lib/types'
@@ -83,6 +83,91 @@ export default function EventoDrawer({ evento, isOpen, onClose }: EventoDrawerPr
                   <p className="text-white/70 text-sm mt-1">{evento.local_endereco}</p>
                 )}
               </div>
+            </div>
+          </div>
+
+          {/* Informações do Bloco */}
+          <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20 space-y-4">
+            <h3 className="text-yellow-300 font-bold text-lg">Sobre o Bloco</h3>
+            
+            {/* Foto do Bloco */}
+            {evento.bloco_photo_url && (
+              <div className="rounded-xl overflow-hidden">
+                <img 
+                  src={evento.bloco_photo_url} 
+                  alt={evento.bloco_nome}
+                  className="w-full h-48 object-cover"
+                />
+              </div>
+            )}
+
+            {/* Descrição */}
+            {evento.bloco_descricao && (
+              <div>
+                <p className="text-white/90 text-sm leading-relaxed">
+                  {evento.bloco_descricao}
+                </p>
+              </div>
+            )}
+
+            {/* Ano de Fundação */}
+            {evento.ano_fundacao && (
+              <div className="flex items-center gap-2">
+                <Award className="w-4 h-4 text-yellow-300" />
+                <span className="text-white/70 text-sm">
+                  Fundado em <span className="text-white font-semibold">{evento.ano_fundacao}</span>
+                </span>
+              </div>
+            )}
+
+            {/* Tipo e Público */}
+            <div className="flex flex-wrap gap-2">
+              {evento.tipo && (
+                <span className="bg-yellow-500/20 text-yellow-300 px-3 py-1 rounded-full text-xs font-semibold border border-yellow-500/30">
+                  {evento.tipo}
+                </span>
+              )}
+              {evento.publico_estimado && evento.publico_estimado > 0 && (
+                <span className="bg-pink-500/20 text-pink-300 px-3 py-1 rounded-full text-xs font-semibold border border-pink-500/30">
+                  ~{evento.publico_estimado.toLocaleString('pt-BR')} pessoas
+                </span>
+              )}
+            </div>
+
+            {/* Links Sociais */}
+            <div className="flex flex-wrap gap-2">
+              {evento.instagram_url && (
+                <a
+                  href={evento.instagram_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-lg hover:scale-105 transition-transform text-sm font-semibold"
+                >
+                  <Instagram className="w-4 h-4" />
+                  Instagram
+                </a>
+              )}
+              {evento.site_url && (
+                <a
+                  href={evento.site_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 bg-white/20 text-white px-4 py-2 rounded-lg hover:bg-white/30 transition-colors text-sm font-semibold border border-white/30"
+                >
+                  <Globe className="w-4 h-4" />
+                  Site
+                </a>
+              )}
+              {evento.whatsapp_url && (
+                <a
+                  href={evento.whatsapp_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors text-sm font-semibold"
+                >
+                  WhatsApp
+                </a>
+              )}
             </div>
           </div>
 
