@@ -98,22 +98,21 @@ node scripts/scrape-g1.js
 ### 3. **Importar para o Supabase**
 
 ```bash
-# Via API route
-curl -X POST http://localhost:3456/api/scrape?source=all
+# Via script direto (OpenClaw Cron local)
+node scripts/import-to-supabase.js all
 
-# Ou específico
-curl -X POST http://localhost:3456/api/scrape?source=diariodorio
+# Ou fonte específica
+node scripts/import-to-supabase.js diariodorio
+node scripts/import-to-supabase.js g1
 ```
 
 **Resposta:**
-```json
-{
-  "success": true,
-  "count": 5,
-  "skipped": 2,
-  "total": 7,
-  "source": "all"
-}
+```
+✅ IMPORTAÇÃO CONCLUÍDA!
+   Inseridas: 5
+   Duplicadas (puladas): 2
+   Erros: 0
+   Total coletado: 7
 ```
 
 ### 4. **Ver Notícias no App**
@@ -121,35 +120,6 @@ curl -X POST http://localhost:3456/api/scrape?source=diariodorio
 1. Acesse: http://localhost:3456
 2. Clique na aba **"Notícias"**
 3. Veja as notícias coletadas!
-
----
-
-## 🔧 API Route
-
-### `POST /api/scrape`
-
-**Query Params:**
-- `source` - Fonte para coletar (all | diariodorio | g1)
-
-**Exemplo:**
-```bash
-# Coletar todas as fontes
-POST /api/scrape?source=all
-
-# Apenas G1
-POST /api/scrape?source=g1
-```
-
-**Response:**
-```typescript
-{
-  success: boolean;
-  count: number;      // Notícias inseridas
-  skipped: number;    // Duplicadas (já existiam)
-  total: number;      // Total coletado
-  source: string;     // Fonte solicitada
-}
-```
 
 ---
 
@@ -301,19 +271,18 @@ async function scrapeNewSource() {
 module.exports = { scrapeNewSource };
 ```
 
-### Integrar na API Route
+### Integrar no Script de Importação
 
-```typescript
-// app/api/scrape/route.ts
-const scrapeNewSource = async () => {
-  const module = await import('@/../scripts/scrape-newsource.js');
-  return module.scrapeNewSource();
-};
+```javascript
+// scripts/import-to-supabase.js
+const { scrapeNewSource } = require('./scrape-newsource.js');
 
-// No POST handler:
+// No importToSupabase():
 if (source === 'all' || source === 'newsource') {
+  console.log('📰 Coletando Nova Fonte...');
   const noticias = await scrapeNewSource();
   allNoticias.push(...noticias);
+  console.log(`✅ Nova Fonte: ${noticias.length} notícias\n`);
 }
 ```
 
