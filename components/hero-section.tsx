@@ -22,9 +22,14 @@ export default function HeroSection() {
   const { eventos } = useBlocos();
   const [countdown, setCountdown] = useState({ days: 0, hours: 0, minutes: 0 });
   const [proximoBloco, setProximoBloco] = useState<string>('');
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    if (eventos.length === 0) return;
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (eventos.length === 0 || !mounted) return;
 
     const updateCountdown = () => {
       const now = new Date();
@@ -66,18 +71,21 @@ export default function HeroSection() {
     const interval = setInterval(updateCountdown, 60000);
 
     return () => clearInterval(interval);
-  }, [eventos]);
+  }, [eventos, mounted]);
 
   return (
-    <section
-      className="relative overflow-hidden text-white"
-      style={{
-        backgroundImage: 'url(/carna-nicole.gif)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundAttachment: 'fixed'
-      }}
-    >
+    <section className="relative overflow-hidden text-white">
+      {/* Vídeo Background */}
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover"
+      >
+        <source src="/carna-nicole.mp4" type="video/mp4" />
+      </video>
+
       {/* Overlay para melhor legibilidade do texto */}
       <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/80 via-red-500/80 to-purple-600/80" />
 
@@ -113,33 +121,43 @@ export default function HeroSection() {
           </div>
 
           {/* Contagem Regressiva */}
-          <div className="space-y-4">
-            <p className="text-lg md:text-xl font-semibold text-white/90">
-              ⏰ Próximo bloco:
-            </p>
-            {proximoBloco && (
-              <div className="bg-white/20 backdrop-blur-md rounded-xl px-6 py-3 inline-block">
-                <p className="text-2xl md:text-3xl font-bold">{proximoBloco}</p>
+          {mounted && (
+            <div className="space-y-4">
+              <p className="text-lg md:text-xl font-semibold text-white/90">
+                ⏰ Próximo bloco:
+              </p>
+              {proximoBloco && (
+                <div className="bg-white/20 backdrop-blur-md rounded-xl px-6 py-3 inline-block">
+                  <p className="text-2xl md:text-3xl font-bold">{proximoBloco}</p>
+                </div>
+              )}
+              <div className="flex justify-center gap-4 md:gap-6">
+                <div className="bg-white/20 backdrop-blur-md rounded-2xl p-4 md:p-6 min-w-[100px]">
+                  <div className="text-4xl md:text-5xl font-black">{countdown.days}</div>
+                  <div className="text-sm md:text-base text-white/80 mt-1">dias</div>
+                </div>
+                <div className="bg-white/20 backdrop-blur-md rounded-2xl p-4 md:p-6 min-w-[100px]">
+                  <div className="text-4xl md:text-5xl font-black">{countdown.hours}</div>
+                  <div className="text-sm md:text-base text-white/80 mt-1">horas</div>
+                </div>
+                <div className="bg-white/20 backdrop-blur-md rounded-2xl p-4 md:p-6 min-w-[100px]">
+                  <div className="text-4xl md:text-5xl font-black">{countdown.minutes}</div>
+                  <div className="text-sm md:text-base text-white/80 mt-1">min</div>
+                </div>
               </div>
-            )}
-            <div className="flex justify-center gap-4 md:gap-6">
-              <div className="bg-white/20 backdrop-blur-md rounded-2xl p-4 md:p-6 min-w-[100px]">
-                <div className="text-4xl md:text-5xl font-black">{countdown.days}</div>
-                <div className="text-sm md:text-base text-white/80 mt-1">dias</div>
-              </div>
-              <div className="bg-white/20 backdrop-blur-md rounded-2xl p-4 md:p-6 min-w-[100px]">
-                <div className="text-4xl md:text-5xl font-black">{countdown.hours}</div>
-                <div className="text-sm md:text-base text-white/80 mt-1">horas</div>
-              </div>
-              <div className="bg-white/20 backdrop-blur-md rounded-2xl p-4 md:p-6 min-w-[100px]">
-                <div className="text-4xl md:text-5xl font-black">{countdown.minutes}</div>
-                <div className="text-sm md:text-base text-white/80 mt-1">min</div>
-              </div>
+              <p className="text-sm md:text-base text-white/80">
+                {proximoBloco ? `Até ${proximoBloco} começar! 🎉` : 'Carregando próximo bloco...'}
+              </p>
             </div>
-            <p className="text-sm md:text-base text-white/80">
-              {proximoBloco ? `Até ${proximoBloco} começar! 🎉` : 'Carregando próximo bloco...'}
-            </p>
-          </div>
+          )}
+          
+          {!mounted && (
+            <div className="space-y-4 opacity-0 animate-pulse">
+              <p className="text-lg md:text-xl font-semibold text-white/90">
+                Carregando...
+              </p>
+            </div>
+          )}
 
           {/* CTAs */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
