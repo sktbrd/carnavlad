@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Carnavlad 2026 | Blocos de Carnaval do Rio",
-  description: "Seu guia definitivo dos blocos de rua do Rio de Janeiro! Descubra eventos, rotas, horários e muito mais. Porque todo bloco merece um site 🎭✨",
+  description: "Seu guia definitivo dos blocos de rua do Rio de Janeiro! Descubra eventos, rotas, horários e muito mais. Porque todo bloco merece um vene diferente 🎭✨",
   manifest: "/manifest.json",
   keywords: [
     "carnaval",
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
   authors: [{ name: "Carnavlad" }],
   creator: "Carnavlad",
   publisher: "Carnavlad",
-  
+
   // OpenGraph
   openGraph: {
     type: "website",
@@ -50,7 +50,7 @@ export const metadata: Metadata = {
       },
     ],
   },
-  
+
   // Twitter
   twitter: {
     card: "summary_large_image",
@@ -58,7 +58,7 @@ export const metadata: Metadata = {
     description: "Seu guia definitivo dos blocos de rua do Rio! 🎭 Porque todo bloco merece um site",
     images: ["/og-image.jpg"],
   },
-  
+
   // PWA
   appleWebApp: {
     capable: true,
