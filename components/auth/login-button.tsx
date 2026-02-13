@@ -41,27 +41,9 @@ export default function LoginButton() {
     return () => subscription.unsubscribe();
   }, [supabase]);
 
-  const handleLogin = async () => {
-    if (!supabase) {
-      alert('Login não configurado. Configure as variáveis de ambiente do Supabase.');
-      return;
-    }
-
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo: `${window.location.origin}/auth/callback`,
-        queryParams: {
-          access_type: 'offline',
-          prompt: 'consent',
-        },
-      },
-    });
-
-    if (error) {
-      console.error('Erro no login:', error);
-      alert('Erro ao fazer login com Google');
-    }
+  const handleLogin = () => {
+    // Redireciona para página de login dedicada
+    window.location.href = '/login';
   };
 
   const handleLogout = async () => {

@@ -2,6 +2,9 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, Calendar, MapPin, Clock, Users } from 'lucide-react';
 import { generateBlocoContent } from '@/lib/groq-generator';
+import { AddToCalendarButton } from '@/components/evento/add-to-calendar-button';
+import { ShareButton } from '@/components/evento/share-button';
+import { ConfirmPresenceButton } from '@/components/evento/confirm-presence-button';
 
 interface EventPageProps {
   params: Promise<{ slug: string }>;
@@ -21,7 +24,7 @@ function createSlug(name: string): string {
 function slugToName(slug: string): string {
   return slug
     .split('-')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .map((word: string) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
 }
 
@@ -243,14 +246,10 @@ export default async function EventPage({ params }: EventPageProps) {
                 </div>
               </div>
 
-              {/* CTA Button */}
-              <button className="w-full mt-6 bg-gradient-to-r from-yellow-400 to-orange-500 text-purple-900 font-bold py-4 px-6 rounded-xl hover:scale-105 transition-transform shadow-lg">
-                Confirmar Presença
-              </button>
-
-              <button className="w-full mt-3 bg-white/20 text-white font-semibold py-3 px-6 rounded-xl hover:bg-white/30 transition-colors border border-white/30">
-                Compartilhar Evento
-              </button>
+              {/* CTA Buttons */}
+              <ConfirmPresenceButton eventSlug={slug} eventName={eventData.name} />
+              <AddToCalendarButton eventData={eventData} />
+              <ShareButton eventData={eventData} />
             </div>
           </div>
         </div>
