@@ -39,7 +39,7 @@ const messages = {
 
 export default function BigCalendarView() {
   const { eventos, loading } = useBlocos();
-  const [view, setView] = useState<View>('week');
+  const [view, setView] = useState<View>('day');
   const [selectedEvento, setSelectedEvento] = useState<EventoCompleto | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   
@@ -62,7 +62,7 @@ export default function BigCalendarView() {
       const [hours, minutes] = (evento.horario || '12:00').split(':');
       const start = new Date(evento.data);
       start.setHours(parseInt(hours) || 12, parseInt(minutes) || 0, 0);
-      
+
       const end = new Date(start);
       end.setHours(start.getHours() + 2); // 2 horas de duração padrão
 
