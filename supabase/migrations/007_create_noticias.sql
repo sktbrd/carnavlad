@@ -31,14 +31,15 @@ CREATE POLICY "Notícias são públicas para leitura"
   ON noticias FOR SELECT
   USING (true);
 
--- Apenas admins podem inserir/atualizar (via API route)
-CREATE POLICY "Apenas API pode inserir notícias"
+-- Permitir inserção via service key (scripts de scraping)
+-- NOTA: Em produção, trocar por auth check específico
+CREATE POLICY "Scripts podem inserir notícias"
   ON noticias FOR INSERT
-  WITH CHECK (false); -- Trocar por auth check de API depois
+  WITH CHECK (true);
 
-CREATE POLICY "Apenas API pode atualizar notícias"
+CREATE POLICY "Scripts podem atualizar notícias"
   ON noticias FOR UPDATE
-  USING (false); -- Trocar por auth check de API depois
+  USING (true);
 
 -- Função para atualizar updated_at automaticamente
 CREATE OR REPLACE FUNCTION update_updated_at_column()
