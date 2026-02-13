@@ -77,9 +77,21 @@ export default function LoginButton() {
     );
   }
 
-  // Se não tiver Supabase configurado, não mostra botão
+  // Se não tiver Supabase configurado, mostra botão desabilitado
   if (!supabase) {
-    return null;
+    return (
+      <Button 
+        variant="outline" 
+        size="sm" 
+        className="gap-2 opacity-50 cursor-not-allowed" 
+        disabled
+        title="Configure as variáveis de ambiente do Supabase"
+      >
+        <LogIn className="w-4 h-4" />
+        <span className="hidden sm:inline">Login (não configurado)</span>
+        <span className="sm:hidden">Login</span>
+      </Button>
+    );
   }
 
   if (user) {
