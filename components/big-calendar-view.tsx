@@ -39,7 +39,20 @@ const messages = {
 export default function BigCalendarView() {
   const { eventos, loading } = useBlocos();
   const [view, setView] = useState<View>('week');
-  const [date, setDate] = useState(new Date('2026-02-14'));
+  
+  // Calcular data central baseada nos eventos
+  const initialDate = useMemo(() => {
+    if (eventos.length === 0) return new Date('2026-02-14');
+    
+    const dates = eventos.map(e => new Date(e.data).getTime());
+    const minDate = Math.min(...dates);
+    const maxDate = Math.max(...dates);
+    const middleDate = new Date((minDate + maxDate) / 2);
+    
+    return middleDate;
+  }, [eventos]);
+
+  const [date, setDate] = useState(initialDate);
 
   const calendarEvents: CalendarEvent[] = useMemo(() => {
     return eventos.map(evento => {
