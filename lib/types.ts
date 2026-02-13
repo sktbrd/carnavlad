@@ -29,6 +29,14 @@ export type EventoCompleto = Evento & {
   bloco_slug: string;
   instagram_url?: string;
   whatsapp_url?: string;
+  ano_fundacao?: string;
+  descricao_detalhada?: string;
+  bairro_nome?: string;
+  bairro_regiao?: string;
+  tipo?: string;
+  publico_estimado?: number;
+  hora_fim?: string;
+  api_id?: number;
 };
 
 export type Contribuicao = {
@@ -51,7 +59,21 @@ export type Comentario = {
   created_at: string;
 };
 
-export type ModoVisualizacao = 'agenda' | 'lista' | 'calendario' | 'mapa';
+export type ModoVisualizacao = 'agenda' | 'lista' | 'calendario' | 'mapa' | 'noticias';
+
+export type Noticia = {
+  id: string;
+  titulo: string;
+  resumo: string;
+  url: string;
+  fonte: 'diariodorio' | 'g1' | 'vejario' | 'twitter' | 'instagram' | 'riotur';
+  imagem_url?: string;
+  publicado_em: string;
+  coletado_em: string;
+  tags: string[];
+  is_alerta: boolean; // cancelamento, mudança, etc
+  bloco_relacionado?: string; // ID do bloco se aplicável
+};
 
 export type PresencaConfirmada = {
   id: string;
