@@ -132,7 +132,7 @@ export default async function EventPage({ params }: EventPageProps) {
               {eventData.name}
             </h1>
             <div className="flex flex-wrap gap-2">
-              {eventData.tags.map(tag => (
+              {eventData.tags.map((tag: string) => (
                 <span 
                   key={tag}
                   className="px-3 py-1 bg-yellow-400 text-purple-900 rounded-full text-sm font-bold"
