@@ -52,3 +52,26 @@ export type Comentario = {
 };
 
 export type ModoVisualizacao = 'agenda' | 'lista' | 'calendario' | 'mapa';
+
+export type PresencaConfirmada = {
+  id: string;
+  user_id: string;
+  evento_id: string;
+  created_at: string;
+};
+
+export type Amigo = {
+  id: string;
+  user_id: string;
+  amigo_id: string;
+  status: 'pendente' | 'aceito';
+  created_at: string;
+};
+
+export type Usuario = {
+  id: string;
+  email: string;
+  nome?: string;
+  avatar_url?: string;
+  created_at: string;
+};

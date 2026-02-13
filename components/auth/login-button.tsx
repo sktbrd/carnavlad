@@ -2,17 +2,9 @@
 
 import { createClient } from '@/lib/supabase/client';
 import { Button } from '@/components/ui/button';
-import { LogIn, LogOut, User } from 'lucide-react';
+import { LogIn, User } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import type { User as SupabaseUser } from '@supabase/supabase-js';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 
 export default function LoginButton() {
   const [user, setUser] = useState<SupabaseUser | null>(null);
@@ -46,11 +38,6 @@ export default function LoginButton() {
     window.location.href = '/login';
   };
 
-  const handleLogout = async () => {
-    if (!supabase) return;
-    await supabase.auth.signOut();
-  };
-
   if (loading) {
     return (
       <Button variant="ghost" size="sm" disabled>
@@ -77,39 +64,8 @@ export default function LoginButton() {
   }
 
   if (user) {
-    return (
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="sm" className="gap-2">
-            {user.user_metadata.avatar_url ? (
-              <img
-                src={user.user_metadata.avatar_url}
-                alt={user.user_metadata.full_name || 'Avatar'}
-                className="w-6 h-6 rounded-full"
-              />
-            ) : (
-              <User className="w-4 h-4" />
-            )}
-            <span className="hidden sm:inline">
-              {user.user_metadata.full_name || user.email}
-            </span>
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuLabel>Minha Conta</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem>
-            <User className="w-4 h-4 mr-2" />
-            Meu Perfil
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={handleLogout} className="text-red-600">
-            <LogOut className="w-4 h-4 mr-2" />
-            Sair
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    );
+    // Se usuário estiver logado, não mostra nada (ProfileButton vai aparecer)
+    return null;
   }
 
   return (
