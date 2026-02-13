@@ -1,7 +1,6 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, Calendar, MapPin, Clock, Users } from 'lucide-react';
-import { db } from '@/lib/db';
 
 interface EventPageProps {
   params: Promise<{ slug: string }>;
@@ -17,55 +16,76 @@ function createSlug(name: string): string {
     .replace(/^-|-$/g, '');
 }
 
+// Mock data - será substituído por dados reais do banco depois
+const MOCK_EVENTS: Record<string, any> = {
+  'bloco-da-alegria': {
+    name: 'Bloco da Alegria',
+    date: '2026-02-15',
+    time: '14:00',
+    location: 'Praça da República',
+    address: 'Praça da República, Centro - São Paulo/SP',
+  },
+  'cordao-do-boitata': {
+    name: 'Cordão do Boitatá',
+    date: '2026-02-16',
+    time: '16:00',
+    location: 'Largo da Batata',
+    address: 'Largo da Batata, Pinheiros - São Paulo/SP',
+  }
+};
+
 export default async function EventPage({ params }: EventPageProps) {
   const { slug } = await params;
 
-  // Buscar todos os eventos e encontrar pelo slug
-  const eventos = await db.query(
-    `SELECT 
-      e.id,
-      e.data,
-      e.horario,
-      e.horario_confirmado,
-      e.observacoes,
-      b.nome as bloco_nome,
-      l.nome as local_nome,
-      l.endereco as local_endereco,
-      l.latitude,
-      l.longitude
-    FROM eventos e
-    JOIN blocos b ON e.bloco_id = b.id
-    JOIN locais l ON e.local_id = l.id
-    ORDER BY e.data, e.horario`
-  );
-
-  const event = eventos.rows.find(e => createSlug(e.bloco_nome) === slug);
-
-  if (!event) {
-    notFound();
+  // TODO: Substituir por busca no banco quando Supabase estiver configurado
+  // Por enquanto, usa mock data ou retorna 404
+  let eventData;
+  
+  if (MOCK_EVENTS[slug]) {
+    eventData = {
+      ...MOCK_EVENTS[slug],
+      slug,
+      description: 'Um dos blocos mais animados do carnaval! Venha com sua fantasia e muita energia.',
+      capacity: 5000,
+      price: 'Gratuito',
+      organizer: MOCK_EVENTS[slug].name,
+      contact: '@' + slug,
+      image: 'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=800',
+      tags: ['Samba', 'Carnaval', 'Festa'],
+      details: {
+        whatToBring: ['Água', 'Protetor solar', 'Fantasia'],
+        rules: ['Respeitar o próximo', 'Não jogar lixo no chão', 'Beber com moderação'],
+        accessibility: 'Consulte a organização'
+      }
+    };
+  } else {
+    // Se não encontrar nos mocks, cria dados genéricos baseado no slug
+    const name = slug
+      .split('-')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+    
+    eventData = {
+      name,
+      slug,
+      description: 'Um dos blocos mais animados do carnaval! Venha com sua fantasia e muita energia.',
+      date: '2026-02-15',
+      time: 'A confirmar',
+      location: 'Rio de Janeiro',
+      address: 'Local a confirmar',
+      capacity: 5000,
+      price: 'Gratuito',
+      organizer: name,
+      contact: '@' + slug,
+      image: 'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=800',
+      tags: ['Samba', 'Carnaval', 'Festa'],
+      details: {
+        whatToBring: ['Água', 'Protetor solar', 'Fantasia'],
+        rules: ['Respeitar o próximo', 'Não jogar lixo no chão', 'Beber com moderação'],
+        accessibility: 'Consulte a organização'
+      }
+    };
   }
-
-  // Gerar dados adicionais mock por enquanto (depois vem do banco)
-  const eventData = {
-    name: event.bloco_nome,
-    slug,
-    description: event.observacoes || 'Um dos blocos mais animados do carnaval! Venha com sua fantasia e muita energia.',
-    date: event.data,
-    time: event.horario || 'A confirmar',
-    location: event.local_nome,
-    address: event.local_endereco,
-    capacity: 5000,
-    price: 'Gratuito',
-    organizer: event.bloco_nome,
-    contact: '@' + createSlug(event.bloco_nome),
-    image: 'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=800',
-    tags: ['Samba', 'Carnaval', 'Festa'],
-    details: {
-      whatToBring: ['Água', 'Protetor solar', 'Fantasia'],
-      rules: ['Respeitar o próximo', 'Não jogar lixo no chão', 'Beber com moderação'],
-      accessibility: 'Consulte a organização'
-    }
-  };
 
   const eventDate = new Date(eventData.date);
   const formattedDate = eventDate.toLocaleDateString('pt-BR', {
