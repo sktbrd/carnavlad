@@ -12,14 +12,29 @@ export async function GET(request: Request) {
   }
 
   if (code) {
+    console.log('[AUTH CALLBACK] Code received:', code.substring(0, 20) + '...')
+    
     const supabase = await createClient()
     
     if (!supabase) {
-      console.error('Supabase client not available')
+      console.error('[AUTH CALLBACK] ❌ Supabase client not available')
       return NextResponse.redirect(`${origin}/auth/auth-code-error`)
     }
     
-    const { error } = await supabase.auth.exchangeCodeForSession(code)
+    console.log('[AUTH CALLBACK] ✅ Supabase client created')
+    console.log('[AUTH CALLBACK] Exchanging code for session...')
+    
+    const { data, error } = await supabase.auth.exchangeCodeForSession(code)
+    
+    if (error) {
+      console.error('[AUTH CALLBACK] ❌ Exchange failed:', error)
+      console.error('[AUTH CALLBACK] Error details:', JSON.stringify(error, null, 2))
+      return NextResponse.redirect(`${origin}/auth/auth-code-error`)
+    }
+    
+    console.log('[AUTH CALLBACK] ✅ Exchange successful!')
+    console.log('[AUTH CALLBACK] User:', data.user?.email)
+    
     if (!error) {
       const forwardedHost = request.headers.get('x-forwarded-host') // origem antes do load balancer
       const isLocalEnv = process.env.NODE_ENV === 'development'

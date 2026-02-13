@@ -5,6 +5,9 @@ export async function createClient() {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
+  console.log('[SERVER] Supabase URL:', supabaseUrl ? `${supabaseUrl.substring(0, 30)}...` : 'MISSING')
+  console.log('[SERVER] Supabase Key:', supabaseKey ? `${supabaseKey.substring(0, 20)}...` : 'MISSING')
+
   // Valida se as variáveis existem E são válidas
   if (!supabaseUrl || !supabaseKey || supabaseUrl === '' || supabaseKey === '') {
     console.warn('⚠️ Supabase credentials not configured (server)');
