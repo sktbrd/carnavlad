@@ -9,6 +9,7 @@
 const { createClient } = require('@supabase/supabase-js');
 const { scrapeDiarioDoRio } = require('./scrape-diariodorio.js');
 const { scrapeG1 } = require('./scrape-g1.js');
+const { scrapeVejaRio } = require('./scrape-vejario.js');
 require('dotenv').config({ path: '.env.local' });
 
 // Inicializar Supabase
@@ -44,6 +45,13 @@ async function importToSupabase(source = 'all') {
       const noticias = await scrapeG1();
       allNoticias.push(...noticias);
       console.log(`✅ G1: ${noticias.length} notícias\n`);
+    }
+
+    if (source === 'all' || source === 'vejario') {
+      console.log('📰 Coletando Veja Rio...');
+      const noticias = await scrapeVejaRio();
+      allNoticias.push(...noticias);
+      console.log(`✅ Veja Rio: ${noticias.length} notícias\n`);
     }
 
     console.log(`📊 Total coletado: ${allNoticias.length} notícias\n`);

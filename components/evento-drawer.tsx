@@ -6,6 +6,7 @@ import { ptBR } from 'date-fns/locale'
 import type { EventoCompleto } from '@/lib/types'
 import { useRouter } from 'next/navigation'
 import { parseLocalDate } from '@/lib/date-utils'
+import { ConfirmPresenceButton } from '@/components/evento/confirm-presence-button'
 
 interface EventoDrawerProps {
   evento: EventoCompleto | null
@@ -181,10 +182,13 @@ export default function EventoDrawer({ evento, isOpen, onClose }: EventoDrawerPr
             </button>
 
             <div className="grid grid-cols-2 gap-3">
-              <button className="bg-white/20 text-white font-semibold py-3 px-4 rounded-xl hover:bg-white/30 transition-colors border border-white/30 flex items-center justify-center gap-2">
-                <Heart className="w-4 h-4" />
-                Favoritar
-              </button>
+              <div className="contents">
+                <ConfirmPresenceButton 
+                  eventoId={evento.id} 
+                  eventName={evento.bloco_nome}
+                  variant="compact"
+                />
+              </div>
               <button className="bg-white/20 text-white font-semibold py-3 px-4 rounded-xl hover:bg-white/30 transition-colors border border-white/30 flex items-center justify-center gap-2">
                 <Share2 className="w-4 h-4" />
                 Compartilhar

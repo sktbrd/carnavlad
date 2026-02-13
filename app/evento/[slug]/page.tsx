@@ -6,6 +6,7 @@ import { AddToCalendarButton } from '@/components/evento/add-to-calendar-button'
 import { ShareButton } from '@/components/evento/share-button';
 import { ConfirmPresenceButton } from '@/components/evento/confirm-presence-button';
 import { parseLocalDate } from '@/lib/date-utils';
+import { createClient } from '@/lib/supabase/server';
 
 interface EventPageProps {
   params: Promise<{ slug: string }>;
@@ -50,11 +51,61 @@ const MOCK_EVENTS: Record<string, any> = {
 export default async function EventPage({ params }: EventPageProps) {
   const { slug } = await params;
 
-  // TODO: Substituir por busca no banco quando Supabase estiver configurado
-  // Por enquanto, usa mock data ou gera com Groq AI
+  // Buscar evento real do Supabase
+  const supabase = await createClient();
+  let evento = null;
+  let eventoId = null;
+
+  if (supabase) {
+    const { data, error } = await supabase
+      .from('eventos_completos')
+      .select('*')
+      .eq('bloco_slug', slug)
+      .limit(1)
+      .single();
+
+    if (!error && data) {
+      evento = data;
+      eventoId = data.id;
+    }
+  }
+
   let eventData;
   
-  if (MOCK_EVENTS[slug]) {
+  if (evento) {
+    // Usar dados reais do Supabase
+    const eventDate = parseLocalDate(evento.data);
+    const formattedDate = eventDate.toLocaleDateString('pt-BR', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+
+    eventData = {
+      id: evento.id,
+      name: evento.bloco_nome,
+      slug: evento.bloco_slug,
+      description: evento.bloco_descricao || 'Um dos blocos mais animados do carnaval!',
+      date: evento.data,
+      time: evento.horario || 'A confirmar',
+      location: evento.local_nome,
+      address: evento.local_endereco,
+      lat: evento.local_lat,
+      lng: evento.local_lng,
+      capacity: evento.publico_estimado || 5000,
+      price: 'Gratuito',
+      organizer: evento.bloco_nome,
+      contact: evento.instagram_url ? '@' + evento.instagram_url.split('/').pop() : '@' + slug,
+      image: evento.bloco_photo_url || 'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=800',
+      tags: evento.tipo ? [evento.tipo, 'Carnaval', evento.bairro_nome].filter(Boolean) : ['Carnaval'],
+      details: {
+        whatToBring: ['Água', 'Protetor solar', 'Fantasia', 'Dinheiro em espécie'],
+        rules: ['Respeitar o próximo', 'Não jogar lixo no chão', 'Beber com moderação', 'Seguir as instruções da organização'],
+        accessibility: evento.observacoes || 'Consulte a organização para informações de acessibilidade'
+      }
+    };
+  } else if (MOCK_EVENTS[slug]) {
     eventData = {
       ...MOCK_EVENTS[slug],
       slug,
@@ -248,7 +299,7 @@ export default async function EventPage({ params }: EventPageProps) {
               </div>
 
               {/* CTA Buttons */}
-              <ConfirmPresenceButton eventSlug={slug} eventName={eventData.name} />
+              <ConfirmPresenceButton eventoId={eventoId || slug} eventName={eventData.name} />
               <AddToCalendarButton eventData={eventData} />
               <ShareButton eventData={eventData} />
             </div>
