@@ -69,7 +69,18 @@ export default function HeroSection() {
   }, [eventos]);
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-yellow-400 via-red-500 to-purple-600 text-white">
+    <section
+      className="relative overflow-hidden text-white"
+      style={{
+        backgroundImage: 'url(/carna-nicole.gif)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundAttachment: 'fixed'
+      }}
+    >
+      {/* Overlay para melhor legibilidade do texto */}
+      <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/80 via-red-500/80 to-purple-600/80" />
+
       {/* Pattern de confete */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-0 left-0 w-full h-full" style={{
