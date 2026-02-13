@@ -2,13 +2,14 @@
 
 import { useState, Suspense } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Calendar, List, MapPin, Clock } from 'lucide-react';
+import { Calendar, List, MapPin, Clock, Newspaper } from 'lucide-react';
 import HeroSection from '@/components/hero-section';
 import Footer from '@/components/footer';
 import AgendaView from '@/components/views/agenda-view';
 import ListaView from '@/components/views/lista-view';
 import CalendarioView from '@/components/views/calendario-view';
 import MapaView from '@/components/views/mapa-view';
+import NoticiasView from '@/components/views/noticias-view';
 import AuthHandler from './auth-handler';
 import type { ModoVisualizacao } from '@/lib/types';
 
@@ -28,7 +29,7 @@ export default function Home() {
         <Tabs value={modo} onValueChange={(v) => setModo(v as ModoVisualizacao)} className="w-full">
           {/* Tabs redesenhadas */}
           <div className="mb-8 bg-white rounded-2xl shadow-md border border-gray-100 p-2">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-2">
               <button
                 onClick={() => setModo('calendario')}
                 className={`relative flex flex-col sm:flex-row items-center justify-center gap-2 py-4 px-6 rounded-xl transition-all duration-300 cursor-pointer group focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 ${
@@ -121,6 +122,29 @@ export default function Home() {
                   modo === 'mapa' ? 'opacity-100 scale-100' : 'opacity-0 scale-0'
                 }`} />
               </button>
+
+              <button
+                onClick={() => setModo('noticias')}
+                className={`relative flex flex-col sm:flex-row items-center justify-center gap-2 py-4 px-6 rounded-xl transition-all duration-300 cursor-pointer group focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 ${
+                  modo === 'noticias'
+                    ? 'bg-white shadow-lg'
+                    : 'bg-gray-50 hover:bg-gray-100 hover:shadow-sm'
+                }`}
+                role="tab"
+                aria-selected={modo === 'noticias'}
+              >
+                <Newspaper className={`w-6 h-6 transition-colors duration-300 ${
+                  modo === 'noticias' ? 'text-orange-500' : 'text-gray-400 group-hover:text-orange-400'
+                }`} />
+                <span className={`text-sm font-medium transition-all duration-300 ${
+                  modo === 'noticias' ? 'text-gray-900 font-bold' : 'text-gray-600'
+                }`}>
+                  Notícias
+                </span>
+                <div className={`absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-orange-500 to-pink-600 rounded-b-xl transition-all duration-300 ${
+                  modo === 'noticias' ? 'opacity-100 scale-100' : 'opacity-0 scale-0'
+                }`} />
+              </button>
             </div>
           </div>
 
@@ -129,6 +153,7 @@ export default function Home() {
             <TabsTrigger value="agenda" />
             <TabsTrigger value="lista" />
             <TabsTrigger value="mapa" />
+            <TabsTrigger value="noticias" />
           </TabsList>
 
           <TabsContent value="agenda" className="mt-0">
@@ -145,6 +170,10 @@ export default function Home() {
 
           <TabsContent value="mapa" className="mt-0">
             <MapaView />
+          </TabsContent>
+
+          <TabsContent value="noticias" className="mt-0">
+            <NoticiasView />
           </TabsContent>
         </Tabs>
       </div>
