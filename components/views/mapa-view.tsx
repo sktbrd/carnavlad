@@ -9,6 +9,8 @@ import { Clock, MapPin } from 'lucide-react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { useBlocos } from '@/lib/hooks/use-blocos';
+import EventoDrawer from '@/components/evento-drawer';
+import type { EventoCompleto } from '@/lib/types';
 
 // Importar componentes de mapa dinamicamente (client-side only)
 const Map = dynamic(
@@ -42,6 +44,8 @@ const RIO_CENTER: [number, number] = [-22.9035, -43.1955];
 export default function MapaView() {
   const { eventos, loading } = useBlocos();
   const [filtroData, setFiltroData] = useState<string>('todas');
+  const [selectedEvento, setSelectedEvento] = useState<EventoCompleto | null>(null);
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   // Extrair datas únicas
   const datasDisponiveis = useMemo(() => {
@@ -113,9 +117,15 @@ export default function MapaView() {
                 <MapMarker
                   key={evento.id}
                   position={[evento.local_lat!, evento.local_lng!]}
+                  eventHandlers={{
+                    click: () => {
+                      setSelectedEvento(evento);
+                      setDrawerOpen(true);
+                    },
+                  }}
                 >
                   <MapPopup>
-                    <div className="space-y-2 min-w-[200px]">
+                    <div className="space-y-2 min-w-[200px] cursor-pointer">
                       <h3 className="font-bold">{evento.bloco_nome}</h3>
                       <div className="space-y-1 text-sm">
                         <div className="flex items-center gap-1">
@@ -127,13 +137,7 @@ export default function MapaView() {
                             {evento.horario || 'A confirmar'}
                           </Badge>
                         </div>
-                        <div className="flex items-start gap-1">
-                          <MapPin className="w-3 h-3 mt-0.5 flex-shrink-0" />
-                          <div>
-                            <p className="font-medium">{evento.local_nome}</p>
-                            <p className="text-muted-foreground text-xs">{evento.local_endereco}</p>
-                          </div>
-                        </div>
+                        <p className="text-xs text-muted-foreground mt-2">Clique para ver detalhes</p>
                       </div>
                     </div>
                   </MapPopup>
@@ -143,6 +147,12 @@ export default function MapaView() {
           )}
         </div>
       </Card>
+      
+      <EventoDrawer
+        evento={selectedEvento}
+        isOpen={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+      />
     </div>
   );
 }

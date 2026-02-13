@@ -8,6 +8,7 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { useMemo, useState } from 'react';
 import { useBlocos } from '@/lib/hooks/use-blocos';
 import type { EventoCompleto } from '@/lib/types';
+import EventoDrawer from './evento-drawer';
 
 moment.locale('pt-br');
 const localizer = momentLocalizer(moment);
@@ -39,6 +40,8 @@ const messages = {
 export default function BigCalendarView() {
   const { eventos, loading } = useBlocos();
   const [view, setView] = useState<View>('week');
+  const [selectedEvento, setSelectedEvento] = useState<EventoCompleto | null>(null);
+  const [drawerOpen, setDrawerOpen] = useState(false);
   
   // Calcular data central baseada nos eventos
   const initialDate = useMemo(() => {
@@ -81,35 +84,55 @@ export default function BigCalendarView() {
     );
   }
 
+  const handleSelectEvent = (event: CalendarEvent) => {
+    setSelectedEvento(event.resource);
+    setDrawerOpen(true);
+  };
+
   return (
-    <div className="rounded-lg border overflow-hidden">
-      <Calendar
-        localizer={localizer}
-        events={calendarEvents}
-        startAccessor="start"
-        endAccessor="end"
-        view={view}
-        onView={setView}
-        date={date}
-        onNavigate={setDate}
-        messages={messages}
-        defaultView="week"
-        views={['month', 'week', 'day', 'agenda']}
-        step={60}
-        showMultiDayTimes
-        min={new Date(2026, 1, 14, 6, 0, 0)} // 6h da manhã
-        max={new Date(2026, 1, 14, 23, 0, 0)} // 23h
-        components={{
-          event: ({ event }) => (
-            <div className="text-xs font-medium truncate">
-              {event.title}
-            </div>
-          ),
-        }}
-        eventPropGetter={() => ({
-          className: 'hover:shadow-lg transition-shadow',
-        })}
+    <>
+      <div className="rounded-lg border overflow-hidden">
+        <Calendar
+          localizer={localizer}
+          events={calendarEvents}
+          startAccessor="start"
+          endAccessor="end"
+          view={view}
+          onView={setView}
+          date={date}
+          onNavigate={setDate}
+          onSelectEvent={handleSelectEvent}
+          messages={messages}
+          defaultView="week"
+          views={['month', 'week', 'day', 'agenda']}
+          step={60}
+          showMultiDayTimes
+          min={new Date(2026, 1, 14, 6, 0, 0)} // 6h da manhã
+          max={new Date(2026, 1, 14, 23, 0, 0)} // 23h
+          components={{
+            event: ({ event }) => (
+              <div className="text-xs font-medium truncate px-1">
+                {event.title}
+              </div>
+            ),
+          }}
+          eventPropGetter={() => ({
+            style: {
+              backgroundColor: '#ec4899',
+              borderColor: '#be185d',
+              color: '#ffffff',
+              opacity: 1,
+            },
+            className: 'hover:!opacity-90 transition-opacity cursor-pointer',
+          })}
+        />
+      </div>
+      
+      <EventoDrawer
+        evento={selectedEvento}
+        isOpen={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
       />
-    </div>
+    </>
   );
 }
