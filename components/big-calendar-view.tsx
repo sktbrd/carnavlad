@@ -38,7 +38,7 @@ const messages = {
 
 export default function BigCalendarView() {
   const { eventos, loading } = useBlocos();
-  const [view, setView] = useState<View>('week');
+  const [view, setView] = useState<View>('day');
   const [date, setDate] = useState(new Date('2026-02-14'));
 
   const calendarEvents: CalendarEvent[] = useMemo(() => {
@@ -46,7 +46,7 @@ export default function BigCalendarView() {
       const [hours, minutes] = (evento.horario || '12:00').split(':');
       const start = new Date(evento.data);
       start.setHours(parseInt(hours) || 12, parseInt(minutes) || 0, 0);
-      
+
       const end = new Date(start);
       end.setHours(start.getHours() + 2); // 2 horas de duração padrão
 
