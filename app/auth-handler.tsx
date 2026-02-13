@@ -12,20 +12,26 @@ export default function AuthHandler() {
   useEffect(() => {
     const code = searchParams.get('code')
     
-    if (code && supabase) {
-      // Exchange code for session
-      supabase.auth.exchangeCodeForSession(code).then(({ data, error }) => {
-        if (error) {
-          console.error('Erro ao trocar código:', error)
-          router.push('/auth/auth-code-error')
-          return
-        }
-        
-        // Sucesso! Redireciona para home
-        console.log('Login com sucesso!', data)
-        router.push('/')
-      })
+    if (!code) return
+    
+    if (!supabase) {
+      console.error('Supabase client not available')
+      router.push('/auth/auth-code-error')
+      return
     }
+    
+    // Exchange code for session
+    supabase.auth.exchangeCodeForSession(code).then(({ data, error }) => {
+      if (error) {
+        console.error('Erro ao trocar código:', error)
+        router.push('/auth/auth-code-error')
+        return
+      }
+      
+      // Sucesso! Redireciona para home
+      console.log('Login com sucesso!', data)
+      router.push('/')
+    })
   }, [searchParams, router, supabase])
 
   return null
