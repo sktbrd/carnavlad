@@ -162,7 +162,7 @@ export default async function EventPage({ params }: EventPageProps) {
             <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
               <h2 className="text-2xl font-bold text-yellow-300 mb-4">O que levar</h2>
               <ul className="space-y-2">
-                {eventData.details.whatToBring.map((item, idx) => (
+                {eventData.details.whatToBring.map((item: string, idx: number) => (
                   <li key={idx} className="text-white flex items-center gap-2">
                     <span className="text-yellow-300">✓</span>
                     {item}
@@ -175,7 +175,7 @@ export default async function EventPage({ params }: EventPageProps) {
             <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
               <h2 className="text-2xl font-bold text-yellow-300 mb-4">Regras e Recomendações</h2>
               <ul className="space-y-2">
-                {eventData.details.rules.map((rule, idx) => (
+                {eventData.details.rules.map((rule: string, idx: number) => (
                   <li key={idx} className="text-white flex items-center gap-2">
                     <span className="text-yellow-300">•</span>
                     {rule}
