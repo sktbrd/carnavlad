@@ -25,10 +25,10 @@ export default function HeroSection() {
 
   useEffect(() => {
     if (eventos.length === 0) return;
-    
+
     const updateCountdown = () => {
       const now = new Date();
-      
+
       // Encontrar o próximo evento
       const eventosComData = eventos.map(e => {
         try {
@@ -40,19 +40,19 @@ export default function HeroSection() {
           return null;
         }
       }).filter(e => e !== null);
-      
+
       const proximoEvento = eventosComData
         .filter(e => e.dataCompleta > now)
         .sort((a, b) => a.dataCompleta.getTime() - b.dataCompleta.getTime())[0];
-      
+
       if (proximoEvento) {
         const diff = proximoEvento.dataCompleta.getTime() - now.getTime();
-        
+
         if (diff > 0) {
           const days = Math.floor(diff / (1000 * 60 * 60 * 24));
           const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
           const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-          
+
           setCountdown({ days, hours, minutes });
           setProximoBloco(proximoEvento.bloco_nome);
         }
@@ -64,7 +64,7 @@ export default function HeroSection() {
 
     updateCountdown();
     const interval = setInterval(updateCountdown, 60000);
-    
+
     return () => clearInterval(interval);
   }, [eventos]);
 
@@ -88,8 +88,8 @@ export default function HeroSection() {
             </div>
             <h1 className="text-5xl md:text-7xl font-black tracking-tight flex items-center justify-center gap-3">
               <span className="text-6xl md:text-8xl">🎭</span>
-              <ColourfulText 
-                text="CarnaVlad" 
+              <ColourfulText
+                text="CarnaVlad"
                 colors={carnavalColors}
                 interval={3000}
                 animationDuration={0.6}
