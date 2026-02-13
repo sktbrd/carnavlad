@@ -2,23 +2,38 @@
 
 import LoginButton from '@/components/auth/login-button';
 import { ProfileButton } from '@/components/auth/profile-button';
+import SearchBar from '@/components/search-bar';
 import Link from 'next/link';
 
 export default function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
-      <div className="container mx-auto flex h-16 items-center justify-between px-4">
-        <Link href="/" className="flex items-center gap-2 font-bold text-xl">
-          <span className="text-2xl">🎭</span>
-          <span className="hidden sm:inline bg-gradient-to-r from-orange-500 to-pink-600 bg-clip-text text-transparent">
-            CarnaVlad
-          </span>
-        </Link>
+      <div className="container mx-auto px-4 py-3">
+        <div className="flex items-center justify-between gap-4">
+          {/* Logo */}
+          <Link href="/" className="flex items-center gap-2 font-bold text-xl shrink-0">
+            <span className="text-2xl">🎭</span>
+            <span className="hidden sm:inline bg-gradient-to-r from-orange-500 to-pink-600 bg-clip-text text-transparent">
+              CarnaVlad
+            </span>
+          </Link>
 
-        <nav className="flex items-center gap-4">
-          <ProfileButton />
-          <LoginButton />
-        </nav>
+          {/* Busca - Oculta em mobile muito pequeno */}
+          <div className="hidden md:block flex-1 max-w-2xl">
+            <SearchBar />
+          </div>
+
+          {/* Auth buttons */}
+          <nav className="flex items-center gap-4 shrink-0">
+            <ProfileButton />
+            <LoginButton />
+          </nav>
+        </div>
+
+        {/* Busca mobile - Abaixo em telas pequenas */}
+        <div className="md:hidden mt-3">
+          <SearchBar />
+        </div>
       </div>
     </header>
   );
