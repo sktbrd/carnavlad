@@ -28,7 +28,7 @@ export function generateICSFile(eventos: EventoCompleto[]) {
       title: evento.bloco_nome,
       description: `${evento.bloco_nome}\n\nLocal: ${evento.local_endereco}${evento.observacoes ? `\n\nObservações: ${evento.observacoes}` : ''}\n\nCarnaVlad - Seu guia do Carnaval Rio 2026`,
       location: evento.local_endereco,
-      url: 'http://localhost:3030',
+      url: typeof window !== 'undefined' ? window.location.origin : 'http://localhost:30303',
       status: 'CONFIRMED' as const,
       busyStatus: 'FREE' as const,
       organizer: { name: 'CarnaVlad', email: 'contato@carnavlad.com' },
