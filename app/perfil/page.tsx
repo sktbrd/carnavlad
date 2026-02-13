@@ -2,95 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { Calendar, MapPin, Users, LogOut } from 'lucide-react'
 import Link from 'next/link'
-import { EventoCompleto } from '@/lib/types'
-
-// Mock data - substituir por query Supabase
-const MOCK_EVENTOS: EventoCompleto[] = [
-  {
-    id: '1',
-    bloco_id: '1',
-    bloco_nome: 'Bloco da Alegria',
-    bloco_slug: 'bloco-da-alegria',
-    data: '2026-02-14',
-    horario: '14:00',
-    horario_confirmado: true,
-    local_nome: 'Praça XV',
-    local_endereco: 'Praça XV de Novembro, Centro',
-    local_lat: -22.903,
-    local_lng: -43.175,
-    local_confirmado: true,
-    created_at: '2026-01-01',
-    instagram_url: 'https://instagram.com/blocoalegria',
-  },
-  {
-    id: '2',
-    bloco_id: '2',
-    bloco_nome: 'Cordão da Bola Preta',
-    bloco_slug: 'cordao-da-bola-preta',
-    data: '2026-02-21',
-    horario: '10:00',
-    horario_confirmado: true,
-    local_nome: 'Cinelândia',
-    local_endereco: 'Praça Floriano, Centro',
-    local_lat: -22.909,
-    local_lng: -43.176,
-    local_confirmado: true,
-    created_at: '2026-01-01',
-    instagram_url: 'https://instagram.com/bolapreta',
-  },
-  {
-    id: '3',
-    bloco_id: '3',
-    bloco_nome: 'Monobloco',
-    bloco_slug: 'monobloco',
-    data: '2026-02-28',
-    horario: '16:00',
-    horario_confirmado: true,
-    local_nome: 'Aterro do Flamengo',
-    local_endereco: 'Av. Infante Dom Henrique, Flamengo',
-    local_lat: -22.927,
-    local_lng: -43.173,
-    local_confirmado: true,
-    created_at: '2026-01-01',
-    instagram_url: 'https://instagram.com/monobloco',
-  },
-]
-
-const MOCK_AMIGOS = [
-  {
-    id: '1',
-    nome: 'Maria Silva',
-    avatar_url: `https://api.dicebear.com/7.x/avataaars/svg?seed=Maria`,
-    blocos_confirmados: 12,
-  },
-  {
-    id: '2',
-    nome: 'João Santos',
-    avatar_url: `https://api.dicebear.com/7.x/avataaars/svg?seed=Joao`,
-    blocos_confirmados: 8,
-  },
-  {
-    id: '3',
-    nome: 'Ana Costa',
-    avatar_url: `https://api.dicebear.com/7.x/avataaars/svg?seed=Ana`,
-    blocos_confirmados: 15,
-  },
-  {
-    id: '4',
-    nome: 'Pedro Oliveira',
-    avatar_url: `https://api.dicebear.com/7.x/avataaars/svg?seed=Pedro`,
-    blocos_confirmados: 6,
-  },
-]
-
-function createSlug(name: string): string {
-  return name
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-|-$/g, '')
-}
+import { getEventosConfirmados, getAmigosAceitos, contarBlocosConfirmados } from '@/lib/supabase/queries'
 
 export default async function PerfilPage() {
   const supabase = await createClient()
@@ -107,11 +19,21 @@ export default async function PerfilPage() {
     redirect('/login')
   }
 
-  // TODO: Buscar blocos confirmados do Supabase
-  const eventosConfirmados = MOCK_EVENTOS
+  // Buscar blocos confirmados do Supabase
+  const eventosConfirmados = await getEventosConfirmados(supabase, user.id)
 
-  // TODO: Buscar amigos do Supabase
-  const amigos = MOCK_AMIGOS
+  // Buscar amigos do Supabase
+  const amigosData = await getAmigosAceitos(supabase, user.id)
+  
+  // Enriquecer dados dos amigos com contagem de blocos
+  const amigos = await Promise.all(
+    amigosData.map(async (amigo) => ({
+      id: amigo.amigo_id,
+      nome: amigo.amigo_nome || 'Amigo',
+      avatar_url: amigo.amigo_avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${amigo.amigo_id}`,
+      blocos_confirmados: await contarBlocosConfirmados(supabase, amigo.amigo_id),
+    }))
+  )
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-600 via-pink-500 to-orange-400">
