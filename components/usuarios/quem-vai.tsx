@@ -30,7 +30,7 @@ export function QuemVai({ eventoId, currentUserId }: QuemVaiProps) {
         return
       }
       const data = await getUsuariosConfirmadosNoEvento(supabase, eventoId)
-      setUsuarios(data.flat() as Usuario[])
+      setUsuarios((data ?? []).flat() as Usuario[])
       setLoading(false)
     }
     fetchUsuarios()

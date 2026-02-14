@@ -56,21 +56,23 @@ export default async function EventPage({ params }: EventPageProps) {
   const supabase = await createClient();
   let evento = null;
   let eventoId = null;
-  
-  // Verificar se usuário está logado
-  const { data: { user } } = await supabase.auth.getUser();
+  let user = null;
 
   if (supabase) {
-    const { data, error } = await supabase
+    // Verificar se usuário está logado
+    const { data: authData } = await supabase.auth.getUser();
+    user = authData?.user ?? null;
+
+    const { data: eventoData, error } = await supabase
       .from('eventos_completos')
       .select('*')
       .eq('bloco_slug', slug)
       .limit(1)
       .single();
 
-    if (!error && data) {
-      evento = data;
-      eventoId = data.id;
+    if (!error && eventoData) {
+      evento = eventoData;
+      eventoId = eventoData.id;
     }
   }
 
