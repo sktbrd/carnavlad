@@ -27,6 +27,10 @@ export default async function UsuariosPage() {
   // Buscar todos os usuários
   const usuarios = await getTodosUsuarios(supabase)
 
+  // Debug temporário
+  console.log('[/usuarios] Total de usuários no banco:', usuarios.length)
+  console.log('[/usuarios] Usuário logado:', user.id)
+
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
       <div className="mb-6">
