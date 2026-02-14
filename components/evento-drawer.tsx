@@ -190,7 +190,7 @@ export default function EventoDrawer({ evento, isOpen, onClose }: EventoDrawerPr
 
           {/* Quem Vai */}
           <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20">
-            <QuemVai eventoId={evento.id} currentUserId={currentUserId} />
+            <QuemVai eventoId={evento.id} currentUserId={currentUserId ?? undefined} />
           </div>
 
           {/* CTAs */}
