@@ -38,7 +38,6 @@ export default function NoticiasView() {
         console.error('[noticias] Error fetching:', error);
         setNoticias([]);
       } else {
-        console.log(`[noticias] ✅ Loaded ${data.length} notícias`);
         setNoticias(data as any);
       }
     } catch (err) {

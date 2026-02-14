@@ -27,7 +27,6 @@ export function useBlocos() {
           console.error('[use-blocos] Error fetching eventos:', error);
           setEventos([]);
         } else {
-          console.log(`[use-blocos] ✅ Loaded ${data.length} eventos from Supabase`);
           setEventos(data as any);
         }
       } catch (err) {

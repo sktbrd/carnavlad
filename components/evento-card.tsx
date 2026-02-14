@@ -3,8 +3,7 @@
 import Link from 'next/link';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Clock, MapPin, Heart, Share2, ChevronRight } from 'lucide-react';
+import { Clock, MapPin, ChevronRight } from 'lucide-react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import type { EventoCompleto } from '@/lib/types';
@@ -108,36 +107,6 @@ export default function EventoCard({ evento, variant = 'default' }: EventoCardPr
               {evento.observacoes}
             </p>
           )}
-
-          {/* Ações */}
-          <div className="flex gap-2 pt-2">
-            <Button 
-              variant="outline" 
-              size="sm" 
-              className="flex-1 group/btn hover:bg-red-500 hover:text-white hover:border-red-500 transition-colors"
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                // TODO: Implementar salvar
-              }}
-            >
-              <Heart className="w-4 h-4 mr-2 group-hover/btn:fill-current" />
-              Salvar
-            </Button>
-            <Button 
-              variant="outline" 
-              size="sm" 
-              className="flex-1 hover:bg-blue-500 hover:text-white hover:border-blue-500 transition-colors"
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                // TODO: Implementar compartilhar
-              }}
-            >
-              <Share2 className="w-4 h-4 mr-2" />
-              Compartilhar
-            </Button>
-          </div>
 
           {/* Ver Detalhes - Aparece no hover */}
           <div className="w-full opacity-0 group-hover:opacity-100 transition-all duration-300 bg-gradient-to-r from-yellow-500 to-red-500 hover:from-yellow-600 hover:to-red-600 text-white rounded-md py-2 px-4 flex items-center justify-center gap-2 font-medium">

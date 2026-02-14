@@ -54,7 +54,6 @@ export default function FollowButton({ currentUserId, targetUserId, targetUserna
     try {
       if (isFollowing) {
         // Deixar de seguir
-        console.log('[follow-button] Deixando de seguir:', targetUsername);
         const { error } = await supabase
           .from('amigos')
           .delete()
@@ -66,11 +65,9 @@ export default function FollowButton({ currentUserId, targetUserId, targetUserna
           return;
         }
 
-        console.log('[follow-button] ✅ Deixou de seguir');
         setIsFollowing(false);
       } else {
         // Seguir
-        console.log('[follow-button] Seguindo:', targetUsername);
         const { error } = await supabase
           .from('amigos')
           .insert({
@@ -84,7 +81,6 @@ export default function FollowButton({ currentUserId, targetUserId, targetUserna
           return;
         }
 
-        console.log('[follow-button] ✅ Agora está seguindo');
         setIsFollowing(true);
       }
     } catch (err) {

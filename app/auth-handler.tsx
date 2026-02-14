@@ -29,7 +29,6 @@ export default function AuthHandler() {
       }
       
       // Sucesso! Redireciona para home
-      console.log('Login com sucesso!', data)
       router.push('/')
     })
   }, [searchParams, router, supabase])

@@ -31,23 +31,8 @@ function slugToName(slug: string): string {
     .join(' ');
 }
 
-// Mock data - será substituído por dados reais do banco depois
-const MOCK_EVENTS: Record<string, any> = {
-  'bloco-da-alegria': {
-    name: 'Bloco da Alegria',
-    date: '2026-02-15',
-    time: '14:00',
-    location: 'Praça da República',
-    address: 'Praça da República, Centro - São Paulo/SP',
-  },
-  'cordao-do-boitata': {
-    name: 'Cordão do Boitatá',
-    date: '2026-02-16',
-    time: '16:00',
-    location: 'Largo da Batata',
-    address: 'Largo da Batata, Pinheiros - São Paulo/SP',
-  }
-};
+// AI fallback está disponível caso o bloco não esteja no banco
+// Útil durante desenvolvimento ou para blocos ainda não cadastrados
 
 export default async function EventPage({ params }: EventPageProps) {
   const { slug } = await params;
@@ -111,25 +96,8 @@ export default async function EventPage({ params }: EventPageProps) {
         accessibility: evento.observacoes || 'Consulte a organização para informações de acessibilidade'
       }
     };
-  } else if (MOCK_EVENTS[slug]) {
-    eventData = {
-      ...MOCK_EVENTS[slug],
-      slug,
-      description: 'Um dos blocos mais animados do carnaval! Venha com sua fantasia e muita energia.',
-      capacity: 5000,
-      price: 'Gratuito',
-      organizer: MOCK_EVENTS[slug].name,
-      contact: '@' + slug,
-      image: 'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=800',
-      tags: ['Samba', 'Carnaval', 'Festa'],
-      details: {
-        whatToBring: ['Água', 'Protetor solar', 'Fantasia'],
-        rules: ['Respeitar o próximo', 'Não jogar lixo no chão', 'Beber com moderação'],
-        accessibility: 'Consulte a organização'
-      }
-    };
   } else {
-    // Gera conteúdo dinâmico com Groq AI 🎭
+    // Fallback: Gera conteúdo dinâmico com AI (útil para blocos não cadastrados)
     const name = slugToName(slug);
     const location = 'Rio de Janeiro';
     

@@ -13111,54 +13111,6 @@ DECLARE
 BEGIN
   -- Inserir ou atualizar bloco
   INSERT INTO blocos (nome, slug, descricao, ano_fundacao)
-  VALUES ('BLOCO EU AMO CERVEJA', 'bloco-eu-amo-cerveja', 'Rua da Carioca, 5 - Centro, Rio de Janeiro - RJ, 20050-008, Brasil', '2016')
-  ON CONFLICT (slug) DO UPDATE SET
-    nome = EXCLUDED.nome,
-    descricao = COALESCE(EXCLUDED.descricao, blocos.descricao),
-    ano_fundacao = COALESCE(EXCLUDED.ano_fundacao, blocos.ano_fundacao),
-    updated_at = NOW()
-  RETURNING id INTO bloco_uuid;
-
-  -- Evento do dia 2026-02-15
-  INSERT INTO eventos (
-    bloco_id, api_id, data, horario, horario_confirmado,
-    local_nome, local_endereco, local_lat, local_lng, local_confirmado,
-    tipo, publico_estimado, hora_fim, bairro_id
-  ) VALUES (
-    bloco_uuid,
-    26591,
-    '2026-02-15',
-    '14:00',
-    true,
-    'Rua da Carioca',
-    'Rua da Carioca, 5 - Centro, Rio de Janeiro - RJ, 20050-008, Brasil',
-    -22.9069079,
-    -43.1792259,
-    true,
-    'TRADICIONAL',
-    800,
-    '19:00',
-    1165
-  )
-  ON CONFLICT (api_id) DO UPDATE SET
-    data = EXCLUDED.data,
-    horario = EXCLUDED.horario,
-    local_nome = EXCLUDED.local_nome,
-    local_endereco = EXCLUDED.local_endereco,
-    local_lat = EXCLUDED.local_lat,
-    local_lng = EXCLUDED.local_lng,
-    tipo = EXCLUDED.tipo,
-    publico_estimado = EXCLUDED.publico_estimado,
-    bairro_id = EXCLUDED.bairro_id;
-
-END $$;
-
-DO $$
-DECLARE
-  bloco_uuid UUID;
-BEGIN
-  -- Inserir ou atualizar bloco
-  INSERT INTO blocos (nome, slug, descricao, ano_fundacao)
   VALUES ('BLOCO TOCA RAUUUL', 'bloco-toca-rauuul', 'Composto por 15 componentes, a divisão é feita entre baixo, guitarra, cavaco, sopros, percussões e vocais. O intuito é um só: fazer releituras das músicas do cantor Raul Seixas em diversos ritmos carnavalescos, como frevo, samba, marchinha, ijexá, afoxé e maracatu, sem jamais perder a pegada rock ‘n’ roll com outros estilos como o reggae, salsa e surf music. O repertório atravessa todas as fases da carreira do artista. A apresentação conta ainda com um forte apelo visual, com figurinos, cenografia, adereços, bonecos e efeitos visuais.', '2011')
   ON CONFLICT (slug) DO UPDATE SET
     nome = EXCLUDED.nome,
@@ -16965,7 +16917,7 @@ BEGIN
     -43.4565906,
     true,
     'TRADICIONAL',
-    18000,
+    10000,
     '18:00',
     1228
   )

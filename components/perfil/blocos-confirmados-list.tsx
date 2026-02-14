@@ -33,13 +33,11 @@ export default function BlocosConfirmadosList({ userId }: { userId: string }) {
         .order('created_at', { ascending: false });
 
       if (presencasError || !presencas || presencas.length === 0) {
-        console.log('[blocos-confirmados] Nenhuma presença confirmada');
         setEventos([]);
         setLoading(false);
         return;
       }
 
-      console.log('[blocos-confirmados] Presenças encontradas:', presencas.length);
 
       // Buscar detalhes dos eventos
       const eventoIds = presencas.map(p => p.evento_id);
@@ -53,7 +51,6 @@ export default function BlocosConfirmadosList({ userId }: { userId: string }) {
         console.error('[blocos-confirmados] Erro ao buscar eventos:', eventosError);
         setEventos([]);
       } else {
-        console.log('[blocos-confirmados] ✅ Eventos carregados:', eventosData.length);
         setEventos(eventosData as EventoCompleto[]);
       }
     } catch (err) {
