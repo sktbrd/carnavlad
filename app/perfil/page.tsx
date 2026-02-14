@@ -45,6 +45,7 @@ export default async function PerfilPage() {
     amigosData.map(async (amigo) => ({
       id: amigo.amigo_id,
       nome: amigo.amigo_nome || 'Amigo',
+      username: amigo.amigo_username,
       avatar_url: amigo.amigo_avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${amigo.amigo_id}`,
       blocos_confirmados: await contarBlocosConfirmados(supabase, amigo.amigo_id),
     }))
@@ -154,24 +155,25 @@ export default async function PerfilPage() {
               ) : (
                 <div className="space-y-3">
                   {amigos.map((amigo) => (
-                    <div
+                    <Link
                       key={amigo.id}
-                      className="flex items-center gap-3 bg-white/10 hover:bg-white/20 rounded-xl p-3 border border-white/10 transition-all cursor-pointer"
+                      href={`/u/${amigo.username || amigo.id}`}
+                      className="flex items-center gap-3 bg-white/10 hover:bg-white/20 rounded-xl p-3 border border-white/10 transition-all cursor-pointer group"
                     >
                       <img
                         src={amigo.avatar_url}
                         alt={amigo.nome}
-                        className="w-12 h-12 rounded-full border-2 border-yellow-300"
+                        className="w-12 h-12 rounded-full border-2 border-yellow-300 group-hover:border-yellow-200 transition-all"
                       />
                       <div className="flex-1 min-w-0">
-                        <div className="text-white font-semibold truncate">
+                        <div className="text-white font-semibold truncate group-hover:text-yellow-300 transition-colors">
                           {amigo.nome}
                         </div>
                         <div className="text-white/60 text-sm">
                           {amigo.blocos_confirmados} blocos
                         </div>
                       </div>
-                    </div>
+                    </Link>
                   ))}
                 </div>
               )}

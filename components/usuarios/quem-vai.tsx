@@ -6,11 +6,13 @@ import { getUsuariosConfirmadosNoEvento } from '@/lib/supabase/queries'
 import { BotaoSeguir } from './botao-seguir'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Users } from 'lucide-react'
+import Link from 'next/link'
 
 interface Usuario {
   id: string
   nome: string
   email: string
+  username?: string
   avatar_url?: string
 }
 
@@ -71,10 +73,13 @@ export function QuemVai({ eventoId, currentUserId }: QuemVaiProps) {
         {usuarios.map((usuario) => (
           <div
             key={usuario.id}
-            className="flex items-center justify-between gap-3 p-3 rounded-xl bg-gradient-to-r from-primary/5 to-primary/10 hover:from-primary/10 hover:to-primary/15 border border-primary/20 transition-all hover:shadow-md"
+            className="flex items-center justify-between gap-3 p-3 rounded-xl bg-gradient-to-r from-primary/5 to-primary/10 hover:from-primary/10 hover:to-primary/15 border border-primary/20 transition-all hover:shadow-md group"
           >
-            <div className="flex items-center gap-3 min-w-0 flex-1">
-              <Avatar className="h-12 w-12 border-2 border-primary/30">
+            <Link 
+              href={`/u/${usuario.username || usuario.id}`}
+              className="flex items-center gap-3 min-w-0 flex-1 cursor-pointer"
+            >
+              <Avatar className="h-12 w-12 border-2 border-primary/30 group-hover:border-primary transition-all">
                 <AvatarImage src={usuario.avatar_url} alt={usuario.nome} />
                 <AvatarFallback className="bg-primary text-primary-foreground font-bold">
                   {usuario.nome?.charAt(0).toUpperCase() || '?'}
@@ -82,12 +87,14 @@ export function QuemVai({ eventoId, currentUserId }: QuemVaiProps) {
               </Avatar>
 
               <div className="min-w-0 flex-1">
-                <p className="font-semibold truncate">{usuario.nome}</p>
+                <p className="font-semibold truncate group-hover:text-primary transition-colors">
+                  {usuario.nome}
+                </p>
                 <p className="text-xs text-muted-foreground truncate">
-                  {usuario.email}
+                  @{usuario.username || usuario.email}
                 </p>
               </div>
-            </div>
+            </Link>
 
             {currentUserId && (
               <BotaoSeguir

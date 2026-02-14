@@ -7,6 +7,7 @@ SELECT
   a.user_id,
   a.amigo_id,
   u.nome AS amigo_nome,
+  u.username AS amigo_username,
   u.avatar_url AS amigo_avatar,
   a.created_at
 FROM amigos a

@@ -5,11 +5,13 @@ import { Input } from '@/components/ui/input'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { BotaoSeguir } from './botao-seguir'
 import { Search, Users } from 'lucide-react'
+import Link from 'next/link'
 
 interface Usuario {
   id: string
   nome: string
   email: string
+  username?: string
   avatar_url?: string
 }
 
@@ -80,10 +82,13 @@ export function DiretorioUsuarios({
           {outrosUsuarios.map((usuario) => (
             <div
               key={usuario.id}
-              className="flex items-center justify-between gap-4 p-4 rounded-lg border bg-card hover:bg-muted/30 transition-colors"
+              className="flex items-center justify-between gap-4 p-4 rounded-lg border bg-card hover:bg-muted/30 transition-colors group"
             >
-              <div className="flex items-center gap-3 min-w-0 flex-1">
-                <Avatar className="h-12 w-12">
+              <Link 
+                href={`/u/${usuario.username || usuario.id}`}
+                className="flex items-center gap-3 min-w-0 flex-1 cursor-pointer"
+              >
+                <Avatar className="h-12 w-12 group-hover:ring-2 group-hover:ring-primary transition-all">
                   <AvatarImage src={usuario.avatar_url} alt={usuario.nome} />
                   <AvatarFallback>
                     {usuario.nome?.charAt(0).toUpperCase() || '?'}
@@ -91,12 +96,14 @@ export function DiretorioUsuarios({
                 </Avatar>
 
                 <div className="min-w-0 flex-1">
-                  <p className="font-semibold truncate">{usuario.nome}</p>
+                  <p className="font-semibold truncate group-hover:text-primary transition-colors">
+                    {usuario.nome}
+                  </p>
                   <p className="text-sm text-muted-foreground truncate">
-                    {usuario.email}
+                    @{usuario.username || usuario.email}
                   </p>
                 </div>
-              </div>
+              </Link>
 
               <BotaoSeguir
                 userId={currentUserId}

@@ -328,6 +328,7 @@ export async function getUsuariosConfirmadosNoEvento(
         id,
         nome,
         email,
+        username,
         avatar_url
       )
     `)
