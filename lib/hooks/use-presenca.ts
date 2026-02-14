@@ -110,8 +110,16 @@ export function usePresenca(eventoId: string) {
         setConfirmado(true);
       }
 
-      // Forçar atualização da página para refletir mudanças (avatares, etc)
-      window.location.reload();
+      // Disparar evento customizado para atualizar QuemVai
+      console.log('[use-presenca] Disparando evento presenca-updated');
+      window.dispatchEvent(new CustomEvent('presenca-updated', { 
+        detail: { eventoId, userId, confirmado: !confirmado } 
+      }));
+
+      // Aguardar 500ms antes de recarregar para dar tempo do evento propagar
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
     } catch (err) {
       console.error('[use-presenca] Unexpected error:', err);
     } finally {

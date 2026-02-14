@@ -319,6 +319,8 @@ export async function getUsuariosConfirmadosNoEvento(
   supabase: SupabaseClient,
   eventoId: string
 ) {
+  console.log('[getUsuariosConfirmadosNoEvento] Buscando para evento:', eventoId)
+  
   const { data, error } = await supabase
     .from('presencas_confirmadas')
     .select(`
@@ -336,12 +338,21 @@ export async function getUsuariosConfirmadosNoEvento(
     .order('created_at', { ascending: true })
 
   if (error) {
-    console.error('Erro ao buscar usuários confirmados:', error)
+    console.error('[getUsuariosConfirmadosNoEvento] ❌ Erro:', error)
+    console.error('[getUsuariosConfirmadosNoEvento] Error code:', error.code)
+    console.error('[getUsuariosConfirmadosNoEvento] Error details:', error.details)
+    console.error('[getUsuariosConfirmadosNoEvento] Error hint:', error.hint)
     return []
   }
 
+  console.log('[getUsuariosConfirmadosNoEvento] Raw data:', data)
+  console.log('[getUsuariosConfirmadosNoEvento] Total registros:', data?.length || 0)
+
   // Flatten: retornar array de usuarios
-  return data.map(p => p.usuarios).filter(Boolean)
+  const usuarios = data.map(p => p.usuarios).filter(Boolean)
+  console.log('[getUsuariosConfirmadosNoEvento] Usuários processados:', usuarios.length)
+  
+  return usuarios
 }
 
 /**

@@ -24,18 +24,43 @@ interface QuemVaiProps {
 export function QuemVai({ eventoId, currentUserId }: QuemVaiProps) {
   const [usuarios, setUsuarios] = useState<Usuario[]>([])
   const [loading, setLoading] = useState(true)
+  
   useEffect(() => {
     async function fetchUsuarios() {
+      console.log('[QuemVai] Iniciando fetch para evento:', eventoId)
+      setLoading(true)
+      
       const supabase = createClient()
       if (!supabase) {
+        console.error('[QuemVai] ❌ Supabase client não disponível')
         setLoading(false)
         return
       }
+      
       const data = await getUsuariosConfirmadosNoEvento(supabase, eventoId)
+      console.log('[QuemVai] Dados retornados:', data)
+      console.log('[QuemVai] Total de usuários:', data?.length || 0)
+      
       setUsuarios((data ?? []).flat() as Usuario[])
       setLoading(false)
     }
+    
     fetchUsuarios()
+    
+    // Escutar evento de atualização de presença
+    const handlePresencaUpdate = (e: any) => {
+      console.log('[QuemVai] Evento presenca-updated recebido:', e.detail)
+      if (e.detail?.eventoId === eventoId) {
+        console.log('[QuemVai] Atualizando lista de usuários...')
+        fetchUsuarios()
+      }
+    }
+    
+    window.addEventListener('presenca-updated', handlePresencaUpdate)
+    
+    return () => {
+      window.removeEventListener('presenca-updated', handlePresencaUpdate)
+    }
   }, [eventoId])
 
   if (loading) {
