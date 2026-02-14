@@ -36,6 +36,10 @@ export default async function PerfilPage() {
   // Buscar amigos do Supabase
   const amigosData = await getAmigosAceitos(supabase, user.id)
   
+  // Debug
+  console.log('[/perfil] Amigos retornados:', amigosData.length)
+  console.log('[/perfil] Dados dos amigos:', JSON.stringify(amigosData, null, 2))
+  
   // Enriquecer dados dos amigos com contagem de blocos
   const amigos = await Promise.all(
     amigosData.map(async (amigo) => ({
