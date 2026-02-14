@@ -3,7 +3,17 @@
 import LoginButton from '@/components/auth/login-button';
 import { ProfileButton } from '@/components/auth/profile-button';
 import SearchBar from '@/components/search-bar';
+import ColourfulText from '@/components/colourful-text';
 import Link from 'next/link';
+
+const carnavalColors = [
+  "rgb(255, 215, 0)",   // Amarelo ouro
+  "rgb(255, 20, 147)",  // Rosa choque
+  "rgb(138, 43, 226)",  // Roxo vibrante
+  "rgb(50, 205, 50)",   // Verde limão
+  "rgb(255, 69, 0)",    // Vermelho laranja
+  "rgb(0, 191, 255)",   // Azul céu
+];
 
 export default function Header() {
   return (
@@ -13,8 +23,14 @@ export default function Header() {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 font-bold text-xl shrink-0">
             <span className="text-2xl">🎭</span>
-            <span className="hidden sm:inline bg-gradient-to-r from-orange-500 to-pink-600 bg-clip-text text-transparent">
-              CarnaVlad
+            <span className="hidden sm:inline">
+              <ColourfulText
+                text="CarnaVlad"
+                colors={carnavalColors}
+                interval={3000}
+                animationDuration={0.6}
+                staggerDelay={0.08}
+              />
             </span>
           </Link>
 

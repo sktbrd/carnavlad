@@ -5,7 +5,8 @@ import dynamic from 'next/dynamic';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Clock, MapPin } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Clock, MapPin, Zap } from 'lucide-react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { useBlocos } from '@/lib/hooks/use-blocos';
@@ -45,6 +46,7 @@ const RIO_CENTER: [number, number] = [-22.9035, -43.1955];
 export default function MapaView() {
   const { eventos, loading } = useBlocos();
   const [filtroData, setFiltroData] = useState<string>('todas');
+  const [mostrarAcontecendoAgora, setMostrarAcontecendoAgora] = useState(false);
   const [selectedEvento, setSelectedEvento] = useState<EventoCompleto | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -58,10 +60,26 @@ export default function MapaView() {
   const eventosNoMapa = useMemo(() => {
     return eventos.filter(evento => {
       const temCoordenadas = evento.local_lat && evento.local_lng;
+      
+      // Se filtro "Acontecendo Agora" estiver ativo
+      if (mostrarAcontecendoAgora) {
+        const agora = new Date();
+        const [hours, minutes] = (evento.horario || '00:00').split(':');
+        const eventoDate = parseLocalDate(evento.data);
+        eventoDate.setHours(parseInt(hours) || 0, parseInt(minutes) || 0, 0);
+        
+        // Considera "acontecendo agora" se começou há menos de 6 horas
+        const horasDecorridas = (agora.getTime() - eventoDate.getTime()) / (1000 * 60 * 60);
+        const estaAcontecendo = horasDecorridas >= 0 && horasDecorridas <= 6;
+        
+        return temCoordenadas && estaAcontecendo;
+      }
+      
+      // Filtro normal por data
       const matchData = filtroData === 'todas' || evento.data === filtroData;
       return temCoordenadas && matchData;
     });
-  }, [eventos, filtroData]);
+  }, [eventos, filtroData, mostrarAcontecendoAgora]);
 
   if (loading) {
     return (
@@ -76,24 +94,62 @@ export default function MapaView() {
       {/* Filtro */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-lg">Filtrar por data</CardTitle>
+          <CardTitle className="text-lg">Filtros</CardTitle>
         </CardHeader>
-        <CardContent>
-          <Select value={filtroData} onValueChange={setFiltroData}>
-            <SelectTrigger>
-              <SelectValue placeholder="Selecione uma data" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="todas">Todas as datas</SelectItem>
-              {datasDisponiveis.map(data => (
-                <SelectItem key={data} value={data}>
-                  {format(parseLocalDate(data), "EEEE, dd/MM", { locale: ptBR })}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          <p className="text-sm text-muted-foreground mt-2">
-            {eventosNoMapa.length} blocos no mapa
+        <CardContent className="space-y-4">
+          {/* Botão Acontecendo Agora */}
+          <Button
+            variant={mostrarAcontecendoAgora ? "default" : "outline"}
+            className={`w-full justify-start gap-2 ${
+              mostrarAcontecendoAgora 
+                ? 'bg-gradient-to-r from-orange-500 to-pink-600 text-white hover:from-orange-600 hover:to-pink-700' 
+                : ''
+            }`}
+            onClick={() => {
+              setMostrarAcontecendoAgora(!mostrarAcontecendoAgora);
+              if (!mostrarAcontecendoAgora) {
+                setFiltroData('todas'); // Reset filtro de data quando ativar "Acontecendo Agora"
+              }
+            }}
+          >
+            <Zap className="w-4 h-4" />
+            {mostrarAcontecendoAgora ? '🔥 Acontecendo Agora!' : 'Ver Acontecendo Agora'}
+          </Button>
+
+          {/* Filtro por Data (desabilitado se "Acontecendo Agora" estiver ativo) */}
+          <div className={mostrarAcontecendoAgora ? 'opacity-50 pointer-events-none' : ''}>
+            <label className="text-sm font-medium mb-2 block">Filtrar por data</label>
+            <Select 
+              value={filtroData} 
+              onValueChange={setFiltroData}
+              disabled={mostrarAcontecendoAgora}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Selecione uma data" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="todas">Todas as datas</SelectItem>
+                {datasDisponiveis.map(data => (
+                  <SelectItem key={data} value={data}>
+                    {format(parseLocalDate(data), "EEEE, dd/MM", { locale: ptBR })}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <p className="text-sm text-muted-foreground pt-2 border-t">
+            {mostrarAcontecendoAgora ? (
+              <>
+                <Zap className="w-3 h-3 inline mr-1" />
+                <strong>{eventosNoMapa.length}</strong> blocos acontecendo agora
+              </>
+            ) : (
+              <>
+                <MapPin className="w-3 h-3 inline mr-1" />
+                {eventosNoMapa.length} blocos no mapa
+              </>
+            )}
           </p>
         </CardContent>
       </Card>
