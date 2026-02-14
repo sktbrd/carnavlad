@@ -11,6 +11,10 @@ export const metadata = {
 export default async function UsuariosPage() {
   const supabase = await createClient()
 
+  if (!supabase) {
+    redirect('/login')
+  }
+
   // Verificar se está logado
   const {
     data: { user },
