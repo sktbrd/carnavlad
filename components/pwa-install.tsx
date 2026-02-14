@@ -6,6 +6,13 @@ import { Download, X } from 'lucide-react';
 export default function PWAInstall() {
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [showInstallPrompt, setShowInstallPrompt] = useState(false);
+  const [dismissed, setDismissed] = useState(false);
+
+  useEffect(() => {
+    if (sessionStorage.getItem('pwa-prompt-dismissed')) {
+      setDismissed(true);
+    }
+  }, []);
 
   useEffect(() => {
     // Registrar service worker
@@ -58,16 +65,12 @@ export default function PWAInstall() {
 
   const handleDismiss = () => {
     setShowInstallPrompt(false);
+    setDismissed(true);
     // Não mostrar novamente nesta sessão
     sessionStorage.setItem('pwa-prompt-dismissed', 'true');
   };
 
-  // Não mostrar se já foi dispensado nesta sessão
-  if (sessionStorage.getItem('pwa-prompt-dismissed')) {
-    return null;
-  }
-
-  if (!showInstallPrompt || !deferredPrompt) {
+  if (dismissed || !showInstallPrompt || !deferredPrompt) {
     return null;
   }
 
