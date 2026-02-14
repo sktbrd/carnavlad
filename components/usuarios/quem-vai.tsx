@@ -22,16 +22,19 @@ interface QuemVaiProps {
 export function QuemVai({ eventoId, currentUserId }: QuemVaiProps) {
   const [usuarios, setUsuarios] = useState<Usuario[]>([])
   const [loading, setLoading] = useState(true)
-  const supabase = createClient()
-
   useEffect(() => {
     async function fetchUsuarios() {
+      const supabase = createClient()
+      if (!supabase) {
+        setLoading(false)
+        return
+      }
       const data = await getUsuariosConfirmadosNoEvento(supabase, eventoId)
-      setUsuarios(data as Usuario[])
+      setUsuarios(data.flat() as Usuario[])
       setLoading(false)
     }
     fetchUsuarios()
-  }, [eventoId, supabase])
+  }, [eventoId])
 
   if (loading) {
     return (

@@ -49,6 +49,7 @@ export function DiretorioUsuarios({
         <Input
           type="text"
           placeholder="Buscar por nome ou email..."
+          aria-label="Buscar usuários por nome ou email"
           value={busca}
           onChange={(e) => setBusca(e.target.value)}
           className="pl-10"

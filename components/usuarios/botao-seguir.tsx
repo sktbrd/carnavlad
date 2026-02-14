@@ -24,39 +24,52 @@ export function BotaoSeguir({
 }: BotaoSeguirProps) {
   const [seguindo, setSeguindo] = useState(false)
   const [loading, setLoading] = useState(true)
-  const supabase = createClient()
-
-  // Não pode seguir a si mesmo
-  if (userId === targetUserId) {
-    return null
-  }
+  const isSelf = userId === targetUserId
 
   useEffect(() => {
+    if (isSelf) return
     async function checkSeguindo() {
+      const supabase = createClient()
+      if (!supabase) return
       const result = await isSeguindo(supabase, userId, targetUserId)
       setSeguindo(result)
       setLoading(false)
     }
     checkSeguindo()
-  }, [userId, targetUserId, supabase])
+  }, [userId, targetUserId, isSelf])
+
+  // Não pode seguir a si mesmo
+  if (isSelf) {
+    return null
+  }
 
   async function handleToggle() {
-    setLoading(true)
+    const supabase = createClient()
+    if (!supabase) return
+    try {
+      setLoading(true)
 
-    if (seguindo) {
-      const result = await deixarDeSeguir(supabase, userId, targetUserId)
-      if (result.success) {
-        setSeguindo(false)
+      if (seguindo) {
+        const result = await deixarDeSeguir(supabase, userId, targetUserId)
+        if (result.success) {
+          setSeguindo(false)
+        } else {
+          console.error('Failed to unfollow')
+        }
+      } else {
+        const result = await seguirUsuario(supabase, userId, targetUserId)
+        if (result.success) {
+          setSeguindo(true)
+        } else {
+          console.error('Failed to follow')
+        }
       }
-    } else {
-      // Follow direto (sem aprovação)
-      const result = await seguirUsuario(supabase, userId, targetUserId)
-      if (result.success) {
-        setSeguindo(true)
-      }
+
+      setLoading(false)
+    } catch (error) {
+      console.error('Error toggling follow state:', error)
+      setLoading(false)
     }
-
-    setLoading(false)
   }
 
   if (loading) {
