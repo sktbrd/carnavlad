@@ -47,36 +47,42 @@ export function QuemVai({ eventoId, currentUserId }: QuemVaiProps) {
 
   if (usuarios.length === 0) {
     return (
-      <div className="text-center py-8 text-muted-foreground">
-        <Users className="h-12 w-12 mx-auto mb-2 opacity-20" />
-        <p className="text-sm">Seja o primeiro a confirmar presença! 🎭</p>
+      <div className="text-center py-12">
+        <div className="bg-gradient-to-br from-primary/10 to-primary/5 rounded-full h-24 w-24 mx-auto mb-4 flex items-center justify-center">
+          <Users className="h-12 w-12 text-primary/40" />
+        </div>
+        <p className="text-lg font-semibold mb-1">Ninguém confirmou ainda</p>
+        <p className="text-sm text-muted-foreground">Seja o primeiro a confirmar presença! 🎭</p>
       </div>
     )
   }
 
   return (
-    <div className="space-y-3">
-      <div className="flex items-center gap-2 text-sm font-semibold">
-        <Users className="h-4 w-4" />
-        <span>Quem vai ({usuarios.length})</span>
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2 text-sm font-semibold">
+          <Users className="h-5 w-5 text-primary" />
+          <span className="text-lg">Quem vai</span>
+        </div>
+        <span className="text-2xl font-bold text-primary">{usuarios.length}</span>
       </div>
 
       <div className="space-y-2 max-h-96 overflow-y-auto">
         {usuarios.map((usuario) => (
           <div
             key={usuario.id}
-            className="flex items-center justify-between gap-3 p-3 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors"
+            className="flex items-center justify-between gap-3 p-3 rounded-xl bg-gradient-to-r from-primary/5 to-primary/10 hover:from-primary/10 hover:to-primary/15 border border-primary/20 transition-all hover:shadow-md"
           >
-            <div className="flex items-center gap-3 min-w-0">
-              <Avatar className="h-10 w-10">
+            <div className="flex items-center gap-3 min-w-0 flex-1">
+              <Avatar className="h-12 w-12 border-2 border-primary/30">
                 <AvatarImage src={usuario.avatar_url} alt={usuario.nome} />
-                <AvatarFallback>
+                <AvatarFallback className="bg-primary text-primary-foreground font-bold">
                   {usuario.nome?.charAt(0).toUpperCase() || '?'}
                 </AvatarFallback>
               </Avatar>
 
               <div className="min-w-0 flex-1">
-                <p className="font-medium text-sm truncate">{usuario.nome}</p>
+                <p className="font-semibold truncate">{usuario.nome}</p>
                 <p className="text-xs text-muted-foreground truncate">
                   {usuario.email}
                 </p>
@@ -87,7 +93,7 @@ export function QuemVai({ eventoId, currentUserId }: QuemVaiProps) {
               <BotaoSeguir
                 userId={currentUserId}
                 targetUserId={usuario.id}
-                variant="ghost"
+                variant="outline"
                 size="sm"
                 showLabel={false}
               />

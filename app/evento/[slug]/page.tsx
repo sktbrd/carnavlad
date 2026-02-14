@@ -62,7 +62,7 @@ export default async function EventPage({ params }: EventPageProps) {
     }
   }
 
-  let eventData;
+  let eventData: any;
   
   if (evento) {
     // Usar dados reais do Supabase

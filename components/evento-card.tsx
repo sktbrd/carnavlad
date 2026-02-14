@@ -8,6 +8,7 @@ import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import type { EventoCompleto } from '@/lib/types';
 import { parseLocalDate } from '@/lib/date-utils';
+import { AvatarConfirmados } from '@/components/usuarios/avatares-confirmados';
 
 type EventoCardProps = {
   evento: EventoCompleto;
@@ -107,6 +108,11 @@ export default function EventoCard({ evento, variant = 'default' }: EventoCardPr
               {evento.observacoes}
             </p>
           )}
+
+          {/* Quem Vai */}
+          <div className="pt-2 border-t">
+            <AvatarConfirmados eventoId={evento.id} maxVisible={4} size="sm" />
+          </div>
 
           {/* Ver Detalhes - Aparece no hover */}
           <div className="w-full opacity-0 group-hover:opacity-100 transition-all duration-300 bg-gradient-to-r from-yellow-500 to-red-500 hover:from-yellow-600 hover:to-red-600 text-white rounded-md py-2 px-4 flex items-center justify-center gap-2 font-medium">
