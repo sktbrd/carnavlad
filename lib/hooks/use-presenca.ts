@@ -39,10 +39,15 @@ export function usePresenca(eventoId: string) {
           .select('id')
           .eq('user_id', user.id)
           .eq('evento_id', eventoId)
-          .single();
+          .maybeSingle(); // Mudei de .single() para .maybeSingle() para evitar erro quando não existe
 
-        if (!error && data) {
+        console.log('[use-presenca] Check result:', { data, error, eventoId, userId: user.id });
+
+        if (data) {
           setConfirmado(true);
+          console.log('[use-presenca] ✅ Presença confirmada!');
+        } else {
+          console.log('[use-presenca] ❌ Presença não confirmada');
         }
       } catch (err) {
         console.error('[use-presenca] Error:', err);
@@ -64,10 +69,12 @@ export function usePresenca(eventoId: string) {
     }
 
     setLoading(true);
+    console.log('[use-presenca] Toggle iniciado:', { confirmado, eventoId, userId });
 
     try {
       if (confirmado) {
         // Remover presença
+        console.log('[use-presenca] Removendo presença...');
         const { error } = await supabase
           .from('presencas_confirmadas')
           .delete()
@@ -75,28 +82,36 @@ export function usePresenca(eventoId: string) {
           .eq('evento_id', eventoId);
 
         if (error) {
-          console.error('[use-presenca] Error removing:', error);
+          console.error('[use-presenca] ❌ Error removing:', error);
           return;
         }
 
+        console.log('[use-presenca] ✅ Presença removida!');
         setConfirmado(false);
       } else {
         // Adicionar presença
+        console.log('[use-presenca] Adicionando presença...');
         const { data, error } = await supabase
           .from('presencas_confirmadas')
           .insert({
             user_id: userId,
             evento_id: eventoId,
           })
-          .select();
+          .select()
+          .single();
 
         if (error) {
-          console.error('[use-presenca] Error adding:', error);
+          console.error('[use-presenca] ❌ Error adding:', error);
+          console.error('[use-presenca] Error details:', JSON.stringify(error, null, 2));
           return;
         }
 
+        console.log('[use-presenca] ✅ Presença confirmada!', data);
         setConfirmado(true);
       }
+
+      // Forçar atualização da página para refletir mudanças (avatares, etc)
+      window.location.reload();
     } catch (err) {
       console.error('[use-presenca] Unexpected error:', err);
     } finally {
