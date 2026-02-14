@@ -7,6 +7,9 @@ import type { EventoCompleto } from '@/lib/types'
 import { useRouter } from 'next/navigation'
 import { parseLocalDate } from '@/lib/date-utils'
 import { ConfirmPresenceButton } from '@/components/evento/confirm-presence-button'
+import { QuemVai } from '@/components/usuarios/quem-vai'
+import { createClient } from '@/lib/supabase/client'
+import { useEffect, useState } from 'react'
 
 interface EventoDrawerProps {
   evento: EventoCompleto | null
@@ -16,6 +19,19 @@ interface EventoDrawerProps {
 
 export default function EventoDrawer({ evento, isOpen, onClose }: EventoDrawerProps) {
   const router = useRouter()
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null)
+
+  useEffect(() => {
+    async function fetchUser() {
+      const supabase = createClient()
+      if (!supabase) return
+      
+      const { data: { user } } = await supabase.auth.getUser()
+      setCurrentUserId(user?.id || null)
+    }
+    
+    fetchUser()
+  }, [])
 
   if (!isOpen || !evento) return null
 
@@ -170,6 +186,11 @@ export default function EventoDrawer({ evento, isOpen, onClose }: EventoDrawerPr
                 </a>
               )}
             </div>
+          </div>
+
+          {/* Quem Vai */}
+          <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20">
+            <QuemVai eventoId={evento.id} currentUserId={currentUserId} />
           </div>
 
           {/* CTAs */}
