@@ -173,21 +173,27 @@ export default function HeroSection() {
             </Button>
           </div>
 
-          {/* Stats */}
-          <div className="flex flex-wrap justify-center gap-8 pt-8 border-t border-white/20">
-            <div>
-              <div className="text-3xl font-bold">250+</div>
-              <div className="text-sm text-white/70">Blocos</div>
+          {/* Stats - Dados Reais */}
+          {mounted && eventos.length > 0 && (
+            <div className="flex flex-wrap justify-center gap-8 pt-8 border-t border-white/20">
+              <div>
+                <div className="text-3xl font-bold">{eventos.length}</div>
+                <div className="text-sm text-white/70">Blocos</div>
+              </div>
+              <div>
+                <div className="text-3xl font-bold">
+                  {new Set(eventos.map(e => e.data)).size}
+                </div>
+                <div className="text-sm text-white/70">Dias de Festa</div>
+              </div>
+              <div>
+                <div className="text-3xl font-bold">
+                  {new Set(eventos.map(e => e.bairro_nome).filter(Boolean)).size}
+                </div>
+                <div className="text-sm text-white/70">Bairros</div>
+              </div>
             </div>
-            <div>
-              <div className="text-3xl font-bold">8</div>
-              <div className="text-sm text-white/70">Dias de Festa</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold">100+</div>
-              <div className="text-sm text-white/70">Bairros</div>
-            </div>
-          </div>
+          )}
         </div>
       </div>
     </section>
