@@ -8,6 +8,7 @@ import { ConfirmPresenceButton } from '@/components/evento/confirm-presence-butt
 import { QuemVai } from '@/components/usuarios/quem-vai';
 import { parseLocalDate } from '@/lib/date-utils';
 import { createClient } from '@/lib/supabase/server';
+import { getBlocoImageOptimized } from '@/lib/bloco-images';
 
 interface EventPageProps {
   params: Promise<{ slug: string }>;
@@ -88,7 +89,7 @@ export default async function EventPage({ params }: EventPageProps) {
       price: 'Gratuito',
       organizer: evento.bloco_nome,
       contact: evento.instagram_url ? '@' + evento.instagram_url.split('/').pop() : '@' + slug,
-      image: evento.bloco_photo_url || 'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=800',
+      image: getBlocoImageOptimized(evento.bloco_photo_url, evento.tipo, { width: 1200, quality: 80 }),
       tags: evento.tipo ? [evento.tipo, 'Carnaval', evento.bairro_nome].filter(Boolean) : ['Carnaval'],
       details: {
         whatToBring: ['Água', 'Protetor solar', 'Fantasia', 'Dinheiro em espécie'],
