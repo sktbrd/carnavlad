@@ -1,211 +1,225 @@
-# 🚀 Guia de Deploy - CarnaVlad
+# 🚀 Deploy - Sistema de Usuários
 
-## Passo 1: Criar Repositório no GitHub
+## ✅ O Que Está Pronto
 
-```bash
-# No GitHub (github.com):
-# 1. Clique em "+" → "New repository"
-# 2. Nome: carnavlad (ou outro nome)
-# 3. Descrição: Guia completo do Carnaval Rio 2026
-# 4. Público ou Privado (sua escolha)
-# 5. NÃO inicialize com README (já temos)
-# 6. Clique "Create repository"
-```
-
-## Passo 2: Push para GitHub
-
-Copie o repositório URL que aparece (exemplo: `https://github.com/seu-usuario/carnavlad.git`)
-
-```bash
-cd /Users/vladnikolaev/.openclaw/workspace-freelancer-carnaval/blocos-carnaval
-
-# Adicionar remote (substituir URL)
-git remote add origin https://github.com/SEU-USUARIO/carnavlad.git
-
-# Verificar
-git remote -v
-
-# Push
-git push -u origin main
-```
-
-## Passo 3: Deploy no Vercel
-
-### Opção A: Interface Web (Mais Fácil)
-
-1. **Acesse:** [vercel.com](https://vercel.com)
-
-2. **Login:**
-   - Clique "Sign Up" ou "Login"
-   - Conecte com GitHub
-
-3. **Novo Projeto:**
-   - Clique "Add New..." → "Project"
-   - Vercel lista seus repositórios GitHub
-   - Procure "carnavlad" (ou nome que você deu)
-   - Clique "Import"
-
-4. **Configuração:**
-   - **Framework Preset:** Next.js (detecta automaticamente)
-   - **Root Directory:** `./` (padrão)
-   - **Build Command:** `pnpm build` (detecta automaticamente)
-   - **Output Directory:** `.next` (padrão)
-   - **Install Command:** `pnpm install` (detecta automaticamente)
-
-5. **Environment Variables (OPCIONAL - site funciona sem):**
-   - Se quiser ativar Supabase:
-     - Clique "Add" em Environment Variables
-     - `NEXT_PUBLIC_SUPABASE_URL` = `https://seu-projeto.supabase.co`
-     - `NEXT_PUBLIC_SUPABASE_ANON_KEY` = `sua-chave`
-   - Se NÃO quiser Supabase: pule esta etapa
-
-6. **Deploy:**
-   - Clique "Deploy"
-   - Aguarde 2-3 minutos
-   - 🎉 Site no ar!
-
-7. **URL:**
-   - Vercel gera URL automática: `https://carnavlad.vercel.app`
-   - Você pode customizar depois
-
-### Opção B: CLI Vercel (Avançado)
-
-```bash
-# Instalar CLI
-pnpm install -g vercel
-
-# Fazer login
-vercel login
-
-# Deploy em preview
-vercel
-
-# Deploy em produção
-vercel --prod
-```
-
-## Passo 4: Configurar Domínio Customizado (OPCIONAL)
-
-1. **No Vercel:**
-   - Projeto → Settings → Domains
-   - Add Domain
-   - Digite seu domínio (ex: `carnavlad.com.br`)
-
-2. **No seu provedor DNS:**
-   - Adicionar registro CNAME:
-     - Nome: `www` (ou `@`)
-     - Valor: `cname.vercel-dns.com`
-   - Ou seguir instruções específicas do Vercel
-
-## Passo 5: Configurar Banco de Dados (OPCIONAL)
-
-Se quiser ativar Supabase:
-
-1. **Criar projeto Supabase:**
-   - [supabase.com](https://supabase.com) → New Project
-   - Nome: carnavlad-db
-   - Região: South America (São Paulo)
-   - Senha do banco: (salvar em lugar seguro)
-
-2. **Executar Schema:**
-   - SQL Editor → New Query
-   - Copiar conteúdo de `supabase/schema.sql`
-   - Run
-
-3. **Popular dados:**
-   - SQL Editor → New Query
-   - Copiar conteúdo de `supabase/seed.sql`
-   - Run
-
-4. **Copiar credenciais:**
-   - Settings → API
-   - Copiar:
-     - Project URL
-     - anon/public key
-
-5. **Adicionar no Vercel:**
-   - Projeto → Settings → Environment Variables
-   - Add:
-     - `NEXT_PUBLIC_SUPABASE_URL` = URL copiada
-     - `NEXT_PUBLIC_SUPABASE_ANON_KEY` = Key copiada
-   - Save
-
-6. **Redeploy:**
-   - Deployments → Mais recente → "..." → Redeploy
-
-## Atualizações Futuras
-
-Sempre que fizer mudanças:
-
-```bash
-# 1. Commit
-git add .
-git commit -m "feat: descrição da mudança"
-
-# 2. Push
-git push
-
-# 3. Vercel deploya automaticamente!
-```
-
-## Troubleshooting
-
-### Build falhou?
-
-**Erro comum: pnpm não encontrado**
-
-Solução:
-- Vercel → Settings → General
-- Node.js Version: 18.x ou superior
-- Package Manager: pnpm
-- Save
-
-**Erro: módulo não encontrado**
-
-Solução:
-```bash
-# Localmente
-pnpm install
-pnpm build
-
-# Se funcionar, fazer commit do package.json/pnpm-lock.yaml
-git add package.json pnpm-lock.yaml
-git commit -m "fix: update dependencies"
-git push
-```
-
-### Site lento?
-
-- Vercel free tier: 100 GB bandwidth/mês
-- Se passar, considerar Pro ($20/mês)
-
-### Supabase não conecta?
-
-- Verificar variáveis de ambiente no Vercel
-- Verificar se as keys estão corretas
-- Verificar se o schema foi executado
-
-## 📊 Monitoramento
-
-- **Analytics:** Vercel → Projeto → Analytics
-- **Logs:** Vercel → Projeto → Deployments → View Function Logs
-- **Performance:** Vercel → Projeto → Speed Insights
-
-## 🎯 Checklist de Deploy
-
-- [ ] Repositório criado no GitHub
-- [ ] Código enviado (`git push`)
-- [ ] Projeto importado no Vercel
-- [ ] Build bem-sucedido
-- [ ] Site acessível via URL
-- [ ] Testar todas as tabs (Calendário, Agenda, Lista, Mapa)
-- [ ] Testar exportação de calendário
-- [ ] Testar responsividade mobile
-- [ ] (Opcional) Supabase configurado
-- [ ] (Opcional) Domínio customizado
+Código completo implementado:
+- ✅ Diretório de usuários (`/usuarios`)
+- ✅ "Quem Vai" nas páginas de evento  
+- ✅ Botão de seguir/deixar de seguir
+- ✅ 3 queries novas (getTodosUsuarios, getUsuariosConfirmadosNoEvento, isSeguindo)
+- ✅ Link "Foliões" (👥) no header
+- ✅ Servidor local rodando: http://localhost:3456
 
 ---
 
-**🎉 Pronto! Seu site está no ar!**
+## 📋 Passo a Passo para Deploy
 
-URL padrão: `https://seu-projeto.vercel.app`
+### 1️⃣ Verificar/Rodar Migration 010 no Supabase
+
+A migration 010 já tem TUDO que você precisa (incluindo tabela `amigos`).
+
+**URL:** https://supabase.com/dashboard/project/gsnrjesqmslmbykygzas/sql/new
+
+**Verificar se já foi rodada:**
+
+```sql
+SELECT COUNT(*) FROM amigos;
+```
+
+**Se der erro "relation amigos does not exist":**
+
+1. Abrir: `blocos-carnaval/supabase/migrations/010_fix_missing_tables.sql`
+2. Copiar TODO o conteúdo
+3. Colar no SQL Editor
+4. Clicar em "Run"
+5. Aguardar ~10 segundos
+
+**Resultado esperado:**
+
+```
+✅ Migration 010 concluída - Tabelas verificadas/criadas
+   - blocos
+   - eventos
+   - usuarios
+   - presencas_confirmadas ✅
+   - amigos
+   - bairros
+   - noticias
+```
+
+---
+
+### 2️⃣ Testar Local (no seu browser)
+
+**Abra:** http://localhost:3456
+
+#### Teste 1: Link "Foliões"
+1. Ver se aparece "👥 Foliões" no header (desktop)
+2. Clicar nele
+3. **Deve redirecionar para /login** (se não estiver logado)
+
+#### Teste 2: Login
+1. Fazer login com Google
+2. Deve voltar pra home
+3. Clicar novamente em "Foliões"
+4. **Deve mostrar página de diretório**
+5. Se você for o único usuário → "Nenhum folião encontrado"
+
+#### Teste 3: "Quem Vai"
+1. Home → Clicar em um bloco qualquer
+2. Página de detalhes → Rolar até sidebar (direita)
+3. Deve ver seção "Quem vai"
+4. Se ninguém confirmou → "Seja o primeiro a confirmar presença! 🎭"
+5. Clicar em "Confirmar Presença" (❤️)
+6. Recarregar página (F5)
+7. **Deve ver seu nome em "Quem vai (1)"**
+
+#### Teste 4: Seguir (com 2 usuários)
+1. Abrir aba anônima
+2. Login com outro Google
+3. Ir no mesmo bloco
+4. Confirmar presença
+5. Ver "Quem vai (2)" → Ver o outro usuário
+6. Clicar em "Seguir" ao lado do nome
+7. **Botão muda para "Seguindo" ✅**
+
+---
+
+### 3️⃣ Deploy para Produção
+
+**Commit e push:**
+
+```bash
+cd blocos-carnaval
+
+git add -A
+
+git commit -m "feat: sistema de usuários completo
+
+- Diretório de usuários (/usuarios) com busca
+- Quem vai nos eventos (sidebar)
+- Sistema de follows (follow direto, sem aprovação)
+- Link Foliões no header
+- 3 queries novas
+- Componentes: DiretorioUsuarios, QuemVai, BotaoSeguir"
+
+git push origin main
+```
+
+**Aguardar deploy no Vercel:**
+- Vercel detecta push automaticamente
+- Build leva ~2-3 minutos
+- URL: https://carnavlad.vercel.app
+
+---
+
+### 4️⃣ Testar em Produção
+
+**URL:** https://carnavlad.vercel.app
+
+Repetir os testes 1-4 acima na URL de produção.
+
+**Importante:** 
+- Se a migration 010 NÃO foi rodada no Supabase, vai dar erro
+- Rodar migration ANTES de testar em produção
+
+---
+
+## 🐛 Troubleshooting
+
+### "relation amigos does not exist"
+
+**Causa:** Migration 010 não foi rodada.  
+**Solução:** Rodar migration 010 no Supabase (passo 1 acima).
+
+### "Quem Vai" não aparece
+
+**Causa:** `eventoId` não é UUID válido (está usando slug).  
+**Explicação:** "Quem Vai" só aparece quando o evento vem do banco (UUID válido). Mock data não funciona.  
+**Solução:** Rodar migrations 001-010 para ter eventos reais no banco.
+
+### Diretório sempre vazio
+
+**Causa:** Você é o único usuário.  
+**Solução:** Fazer login com outro Google (aba anônima).
+
+### Botão de seguir não funciona
+
+**Verificar:**
+1. Console do browser (F12) → Ver erros
+2. Tabela `amigos` existe no Supabase
+3. RLS policies corretas (migration 002)
+
+---
+
+## 📊 Verificar no Supabase Após Testar
+
+### Tabela `usuarios`
+
+```sql
+SELECT * FROM usuarios;
+```
+
+Deve ter pelo menos 1 registro (você).
+
+### Tabela `presencas_confirmadas`
+
+```sql
+SELECT 
+  pc.id,
+  u.nome as usuario,
+  e.bloco_id,
+  pc.created_at
+FROM presencas_confirmadas pc
+JOIN usuarios u ON pc.user_id = u.id
+JOIN eventos e ON pc.evento_id = e.id
+ORDER BY pc.created_at DESC
+LIMIT 10;
+```
+
+Deve mostrar suas confirmações.
+
+### Tabela `amigos`
+
+```sql
+SELECT 
+  a.id,
+  u1.nome as seguidor,
+  u2.nome as seguindo,
+  a.status,
+  a.created_at
+FROM amigos a
+JOIN usuarios u1 ON a.user_id = u1.id
+JOIN usuarios u2 ON a.amigo_id = u2.id
+ORDER BY a.created_at DESC;
+```
+
+Deve mostrar os follows (status='aceito').
+
+---
+
+## ✨ Features Implementadas
+
+| Feature | Status | Arquivo |
+|---------|--------|---------|
+| Diretório de usuários | ✅ | `app/usuarios/page.tsx` |
+| Busca de usuários | ✅ | `components/usuarios/diretorio-usuarios.tsx` |
+| "Quem Vai" nos eventos | ✅ | `components/usuarios/quem-vai.tsx` |
+| Botão de seguir | ✅ | `components/usuarios/botao-seguir.tsx` |
+| Link no header | ✅ | `components/header.tsx` |
+| Queries | ✅ | `lib/supabase/queries.ts` (+3) |
+
+---
+
+## 📝 Próximas Features (Futuro)
+
+- [ ] Perfil de usuário público
+- [ ] Sistema de aprovação de amizade (opcional)
+- [ ] Notificações quando amigos confirmam blocos
+- [ ] Feed social ("Vlad confirmou presença em...")
+- [ ] Blocos em comum entre amigos
+- [ ] Chat/Mensagens
+
+---
+
+_Bora deployar! 🎭🚀_

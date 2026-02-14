@@ -1,218 +1,201 @@
-# 🎭 CarnaVlad - Carnaval Rio 2026
+# 🎭 Carnavlad
 
-**Seu guia completo dos blocos de carnaval do Rio de Janeiro**
+**Seu guia completo dos blocos de carnaval do Rio de Janeiro 2026**
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/seu-usuario/carnavlad)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/sktbrd/carnavlad)
+
+---
 
 ## 🚀 Demo
 
-[Ver site ao vivo](https://carnavlad.vercel.app) (após deploy)
+**[carnavlad.vercel.app](https://carnavlad.vercel.app)**
 
-## ✨ Funcionalidades
+---
 
-### 🎯 Implementado
-- ✅ **4 Modos de Visualização:**
-  - 📅 **Calendário** - Big Calendar estilo Google Calendar (semana/mês/dia)
-  - 🗓️ **Agenda** - Timeline por dia com cards visuais
-  - 📋 **Lista** - Busca e filtros avançados
-  - 🗺️ **Mapa** - Visualização geográfica dos blocos
+## ✨ Features
 
-- ✅ **Hero Section Vibrante:**
-  - Contagem regressiva dinâmica para o próximo bloco
-  - Título com efeito de texto colorido animado
-  - Stats do evento (250+ blocos)
-  - CTAs para calendário e navegação
+### Core
+- 📅 **Calendário Interativo** - React Big Calendar (semana/mês/dia)
+- 🗺️ **Mapa** - Mapbox com markers dos blocos
+- 📋 **Lista** - Busca e filtros
+- 🗓️ **Agenda** - Timeline por dia
 
-- ✅ **Exportação de Calendário:**
-  - Google Calendar (adicionar direto ou .ics)
-  - Apple Calendar / iCal
-  - Outlook Calendar
-  - Arquivo .ics universal
+### Social
+- 👥 **Diretório de Usuários** - Encontre foliões
+- ❤️ **Confirmar Presença** - "Quem vai" em cada bloco
+- 🤝 **Sistema de Follows** - Siga outros foliões
+- 🔐 **Auth Google** - Login simples e seguro
 
-- ✅ **Cards de Eventos Interativos:**
-  - Botões de salvar (❤️) e compartilhar (📤)
-  - Hover effects profissionais
-  - Variantes: default e compact
-  - Informações completas (local, horário, observações)
+### PWA
+- 📱 **Instalável** - App na tela inicial
+- 🔔 **Service Worker** - Funciona offline
+- 🎨 **Ícones Customizados** - Máscara de carnaval
 
-- ✅ **Design System:**
-  - shadcn/ui components
-  - Tailwind CSS
-  - Paleta de cores de carnaval (amarelo, verde, azul, vermelho, roxo)
-  - Totalmente responsivo (mobile-first)
+### Dados
+- 🎪 **400+ Blocos** - API Oficial do Rio 2026
+- 📰 **Notícias** - Scraping automático (Diário do Rio + G1)
+- 🔄 **Sync Automático** - Dados sempre atualizados
 
-### 🔜 Próximas Fases
-
-**Fase 2 - Social:**
-- [ ] Autenticação (Google/Email)
-- [ ] Upload de fotos por bloco
-- [ ] Comentários
-- [ ] Sistema de moderação
-
-**Fase 3 - Avançado:**
-- [ ] Sugestão de novos blocos (crowdsourcing)
-- [ ] Notificações push
-- [ ] Favoritos e personalização
-- [ ] Integração com redes sociais
+---
 
 ## 📦 Stack
 
-- **Framework:** Next.js 14 (App Router)
-- **Linguagem:** TypeScript
-- **Estilo:** Tailwind CSS + shadcn/ui
-- **Calendário:** React Big Calendar
-- **Mapas:** Leaflet + React Leaflet
-- **Animações:** Framer Motion
-- **Banco de dados:** Supabase (PostgreSQL) - opcional
-- **Deploy:** Vercel
+| Categoria | Tecnologia |
+|-----------|------------|
+| **Framework** | Next.js 16 (App Router) |
+| **Linguagem** | TypeScript |
+| **UI** | Tailwind CSS + shadcn/ui |
+| **Database** | Supabase (PostgreSQL) |
+| **Auth** | Supabase Auth (Google OAuth) |
+| **Maps** | Mapbox GL |
+| **Calendar** | React Big Calendar |
+| **Deploy** | Vercel |
 
-## 🛠️ Instalação
+---
+
+## 🛠️ Setup Rápido
 
 ```bash
-# Clonar repositório
-git clone https://github.com/seu-usuario/carnavlad.git
+# Clonar
+git clone https://github.com/sktbrd/carnavlad.git
 cd carnavlad
 
-# Instalar dependências
+# Instalar (usa pnpm)
 pnpm install
 
-# Rodar em desenvolvimento
-pnpm dev
+# Configurar env
+cp .env.example .env.local
+# Editar .env.local com suas chaves
+
+# Rodar
+pnpm dev -p 3456
 ```
 
-Abra [http://localhost:3000](http://localhost:3000)
+**Abrir:** http://localhost:3456
 
-## 🌐 Deploy no Vercel
+---
 
-### Opção 1: Via GitHub (Recomendado)
+## 📚 Documentação
 
-1. **Push para GitHub:**
-   ```bash
-   git add .
-   git commit -m "Initial commit"
-   git branch -M main
-   git remote add origin https://github.com/seu-usuario/carnavlad.git
-   git push -u origin main
-   ```
+### 🚀 Quick Start
+- **[Roadmap](ROADMAP.md)** - Plano de desenvolvimento
+- **[Deploy Guide](DEPLOY.md)** - Como fazer deploy
 
-2. **Conectar no Vercel:**
-   - Acesse [vercel.com](https://vercel.com)
-   - Clique em "Add New Project"
-   - Importe seu repositório GitHub
-   - Vercel detecta Next.js automaticamente
-   - Clique "Deploy"
+### 📖 Setup
+- **[Supabase](docs/setup/SUPABASE.md)** - Banco de dados
+- **[Auth Google](docs/setup/AUTH.md)** - Login
+- **[PWA](docs/setup/PWA.md)** - Progressive Web App
+- **[Cron Jobs](docs/setup/CRON.md)** - Tarefas automáticas
 
-### Opção 2: CLI Vercel
+### 🎯 Features
+- **[Usuários](docs/features/USUARIOS.md)** - Sistema social
+- **[Notícias](docs/features/NOTICIAS.md)** - Scraping
+- **[API Oficial](docs/features/API_OFICIAL.md)** - Dados do Rio
+
+### 🧹 Código
+- **[Clean Code](CLEAN_CODE.md)** - Padrões
+- **[Troubleshooting](TROUBLESHOOTING.md)** - Problemas comuns
+
+**[📚 Ver toda documentação](docs/README.md)**
+
+---
+
+## 🗄️ Database
+
+### Migrations (Ordem)
+
+1. `001_create_tables.sql` - Tabelas base
+2. `002_rls_policies.sql` - Segurança
+3. `003_seed_data.sql` - Dados iniciais
+4. `004_add_extra_fields.sql` - Campos extras
+5. `005_import_bairros.sql` - 84 bairros
+6. `006_import_blocos_eventos.sql` - 400 blocos
+7-10. Outras features
+
+**Como rodar:**
+1. Acesse Supabase SQL Editor
+2. Copie e cole cada migration (NA ORDEM)
+3. Execute
+
+---
+
+## 🚀 Deploy
+
+### Vercel (Recomendado)
 
 ```bash
-# Instalar Vercel CLI
-pnpm install -g vercel
-
-# Deploy
-vercel
-
-# Deploy em produção
-vercel --prod
+git push origin main
+# Deploy automático no Vercel
 ```
 
-## 🗄️ Banco de Dados (Opcional)
+**Env vars necessárias:**
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+- `NEXT_PUBLIC_GOOGLE_CLIENT_ID`
 
-O site funciona 100% sem banco de dados (usa mock data). Para ativar Supabase:
+**[Ver guia completo de deploy](DEPLOY.md)**
 
-1. **Criar projeto no Supabase:**
-   - Acesse [supabase.com](https://supabase.com)
-   - Criar novo projeto
-   - Copiar URL e API Key
+---
 
-2. **Executar schema:**
-   - SQL Editor → copiar `supabase/schema.sql`
-   - Executar
+## 📊 Status
 
-3. **Popular dados:**
-   - SQL Editor → copiar `supabase/seed.sql`
-   - Executar
+| Feature | Status |
+|---------|--------|
+| Core App | ✅ 100% |
+| Auth | ✅ 100% |
+| Usuários | ✅ 100% |
+| PWA | ✅ 100% |
+| Dados Reais | ✅ 100% |
+| Notícias | ⚠️ 80% |
+| Cron Jobs | ⚠️ 60% |
 
-4. **Configurar variáveis:**
-   ```bash
-   # Criar .env.local
-   NEXT_PUBLIC_SUPABASE_URL=https://seu-projeto.supabase.co
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=sua-chave-anon
-   ```
+**Completude geral:** ~90%
 
-5. **No Vercel:**
-   - Settings → Environment Variables
-   - Adicionar as 2 variáveis
-   - Redeploy
+**[Ver roadmap completo](ROADMAP.md)**
 
-## 📁 Estrutura do Projeto
-
-```
-app/
-├── page.tsx              # Página principal (tabs + hero)
-├── layout.tsx            # Layout raiz
-├── globals.css           # Estilos globais
-
-components/
-├── ui/                   # shadcn components
-├── views/                # Views das tabs
-│   ├── calendario-view.tsx  # Big Calendar
-│   ├── agenda-view.tsx      # Timeline
-│   ├── lista-view.tsx       # Lista com filtros
-│   └── mapa-view.tsx        # Mapa interativo
-├── hero-section.tsx      # Hero com countdown
-├── evento-card.tsx       # Cards de blocos
-├── export-calendar-button.tsx  # Exportação
-├── colourful-text.tsx    # Texto animado
-├── big-calendar-view.tsx # Componente do calendário
-├── footer.tsx            # Footer
-└── shadcn-big-calendar.css  # Estilos do calendário
-
-lib/
-├── types.ts              # TypeScript types
-├── hooks/
-│   └── use-blocos.ts     # Hook de dados
-└── export-calendar.ts    # Funções de exportação
-
-supabase/
-├── schema.sql            # Schema do banco
-└── seed.sql              # Dados iniciais
-```
-
-## 🎨 Cores do Tema
-
-```css
-Amarelo:  #FBBF24 (rgb(251, 191, 36))
-Verde:    #10B981 (rgb(16, 185, 129))
-Azul:     #3B82F6 (rgb(59, 130, 246))
-Vermelho: #EF4444 (rgb(239, 68, 68))
-Roxo:     #A855F7 (rgb(168, 85, 247))
-Laranja:  #FF6B35 (rgb(255, 107, 53))
-Rosa:     #EC4899 (rgb(236, 72, 153))
-```
-
-## 📊 Dados
-
-Atualmente com **24 blocos de exemplo** (14-18/fev/2026).
-
-Para adicionar todos os ~250 blocos:
-- Editar `lib/hooks/use-blocos.ts` (MOCK_EVENTOS)
-- Ou conectar Supabase e popular `supabase/seed.sql`
+---
 
 ## 🤝 Contribuindo
 
-Contribuições são bem-vindas! Para features maiores, abra uma issue primeiro.
+Contribuições são bem-vindas!
+
+1. Fork o projeto
+2. Crie sua branch (`git checkout -b feature/amazing`)
+3. Commit suas mudanças (`git commit -m 'Add amazing feature'`)
+4. Push para branch (`git push origin feature/amazing`)
+5. Abra um Pull Request
+
+---
 
 ## 📝 Licença
 
-MIT © 2026 CarnaVlad
+MIT © 2026 Carnavlad
+
+---
+
+## 🎨 Screenshots
+
+### Home
+![Calendário](docs/screenshots/calendario.png)
+
+### Mapa
+![Mapa](docs/screenshots/mapa.png)
+
+### Mobile
+![Mobile](docs/screenshots/mobile.png)
+
+---
 
 ## 🙏 Créditos
 
-- Design: shadcn/ui
-- Calendário: React Big Calendar
-- Mapas: Leaflet
-- Ícones: Lucide React
+- **UI Components:** [shadcn/ui](https://ui.shadcn.com)
+- **Icons:** [Lucide](https://lucide.dev)
+- **Calendar:** [React Big Calendar](https://github.com/jquense/react-big-calendar)
+- **Maps:** [Mapbox](https://www.mapbox.com)
+- **Database:** [Supabase](https://supabase.com)
 
 ---
 
 **Feito com 🎭 para o Carnaval Rio 2026**
+
+**[sktbrd.com](https://sktbrd.com) | [GitHub](https://github.com/sktbrd)**
