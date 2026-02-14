@@ -5,6 +5,7 @@ import { generateBlocoContent } from '@/lib/groq-generator';
 import { AddToCalendarButton } from '@/components/evento/add-to-calendar-button';
 import { ShareButton } from '@/components/evento/share-button';
 import { ConfirmPresenceButton } from '@/components/evento/confirm-presence-button';
+import { QuemVai } from '@/components/usuarios/quem-vai';
 import { parseLocalDate } from '@/lib/date-utils';
 import { createClient } from '@/lib/supabase/server';
 
@@ -55,6 +56,9 @@ export default async function EventPage({ params }: EventPageProps) {
   const supabase = await createClient();
   let evento = null;
   let eventoId = null;
+  
+  // Verificar se usuário está logado
+  const { data: { user } } = await supabase.auth.getUser();
 
   if (supabase) {
     const { data, error } = await supabase
@@ -303,6 +307,13 @@ export default async function EventPage({ params }: EventPageProps) {
               <AddToCalendarButton eventData={eventData} />
               <ShareButton eventData={eventData} />
             </div>
+
+            {/* Quem Vai */}
+            {eventoId && (
+              <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
+                <QuemVai eventoId={eventoId} currentUserId={user?.id} />
+              </div>
+            )}
           </div>
         </div>
       </div>

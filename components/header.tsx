@@ -23,6 +23,17 @@ export default function Header() {
             <SearchBar />
           </div>
 
+          {/* Navigation Links */}
+          <nav className="hidden lg:flex items-center gap-6 shrink-0">
+            <Link 
+              href="/usuarios" 
+              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"
+            >
+              <span>👥</span>
+              <span>Foliões</span>
+            </Link>
+          </nav>
+
           {/* Auth buttons */}
           <nav className="flex items-center gap-4 shrink-0">
             <ProfileButton />

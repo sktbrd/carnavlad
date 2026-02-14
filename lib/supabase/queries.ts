@@ -140,7 +140,7 @@ export async function getAmigosAceitos(
 }
 
 /**
- * Seguir usuário (follow)
+ * Seguir usuário (follow direto, sem aprovação)
  */
 export async function seguirUsuario(
   supabase: SupabaseClient,
@@ -152,7 +152,7 @@ export async function seguirUsuario(
     .insert({
       user_id: userId,
       amigo_id: amigoId,
-      status: 'pendente', // ou 'aceito' se for follow direto
+      status: 'aceito', // Follow direto (estilo Instagram/Twitter)
     })
     .select()
     .single()
@@ -293,4 +293,71 @@ export async function contarAmigos(
   }
 
   return count || 0
+}
+
+/**
+ * Buscar todos os usuários (para diretório)
+ */
+export async function getTodosUsuarios(supabase: SupabaseClient) {
+  const { data, error } = await supabase
+    .from('usuarios')
+    .select('*')
+    .order('nome', { ascending: true })
+
+  if (error) {
+    console.error('Erro ao buscar todos os usuários:', error)
+    return []
+  }
+
+  return data
+}
+
+/**
+ * Buscar usuários confirmados em um evento específico
+ */
+export async function getUsuariosConfirmadosNoEvento(
+  supabase: SupabaseClient,
+  eventoId: string
+) {
+  const { data, error } = await supabase
+    .from('presencas_confirmadas')
+    .select(`
+      user_id,
+      created_at,
+      usuarios (
+        id,
+        nome,
+        email,
+        avatar_url
+      )
+    `)
+    .eq('evento_id', eventoId)
+    .order('created_at', { ascending: true })
+
+  if (error) {
+    console.error('Erro ao buscar usuários confirmados:', error)
+    return []
+  }
+
+  // Flatten: retornar array de usuarios
+  return data.map(p => p.usuarios).filter(Boolean)
+}
+
+/**
+ * Verificar se o usuário está seguindo outro
+ */
+export async function isSeguindo(
+  supabase: SupabaseClient,
+  userId: string,
+  amigoId: string
+): Promise<boolean> {
+  const { data, error } = await supabase
+    .from('amigos')
+    .select('id')
+    .eq('user_id', userId)
+    .eq('amigo_id', amigoId)
+    .single()
+
+  if (error) return false
+  return !!data
 }
